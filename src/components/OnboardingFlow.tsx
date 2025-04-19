@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart as HeartIcon } from "lucide-react";
+import { Heart as HeartIcon, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "./ui/input";
 
