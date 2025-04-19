@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Check, Heart } from "lucide-react";
+import { Heart as HeartIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "./ui/input";
 
@@ -13,14 +13,21 @@ const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
   const [currentStep, setCurrentStep] = useState(0);
   const [birthday, setBirthday] = useState('');
   
+  const calculateMaxHeartRate = (birthDate: string) => {
+    const age = new Date().getFullYear() - new Date(birthDate).getFullYear();
+    return 220 - age;
+  };
+
   const steps: OnboardingStep[] = [
     {
       title: "Welcome to FitCommit",
-      description: "Accountability for serious fitness goals",
+      description: "Your Path to Fitness Accountability",
       content: (
         <div className="flex flex-col items-center justify-center h-64 space-y-6">
-          <h1 className="hero-text">FITCOMMIT</h1>
-          <p className="subtitle-text text-center max-w-md">
+          <h1 className="text-[4.5rem] leading-none tracking-tight font-display font-semibold">
+            FITCOMMIT
+          </h1>
+          <p className="text-xl tracking-tight text-white/90 font-display max-w-md text-center">
             Transform your goals into achievements, or pay the price
           </p>
         </div>
@@ -32,7 +39,7 @@ const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
       content: (
         <div className="flex flex-col items-center justify-center h-64 space-y-6">
           <div className="w-16 h-16 rounded-full bg-fitCharcoal border border-white/5 flex items-center justify-center mb-2">
-            <Heart className="w-8 h-8 text-fitGold" />
+            <HeartIcon className="w-8 h-8 text-fitGold" />
           </div>
           <div className="text-center space-y-4">
             <p className="text-sm text-fitSilver">
@@ -45,6 +52,11 @@ const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
               className="w-full max-w-xs text-center"
               max={new Date().toISOString().split('T')[0]}
             />
+            {birthday && (
+              <p className="text-sm text-fitSilver">
+                Target Heart Rate Zone: {Math.round(calculateMaxHeartRate(birthday) * 0.64)} - {Math.round(calculateMaxHeartRate(birthday) * 0.76)} BPM
+              </p>
+            )}
           </div>
         </div>
       )
@@ -89,7 +101,7 @@ const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
       content: (
         <div className="flex flex-col items-center justify-center h-64">
           <div className="w-16 h-16 rounded-full bg-fitCharcoal border border-white/5 flex items-center justify-center mb-6">
-            <Heart className="w-8 h-8 text-fitGold" />
+            <HeartIcon className="w-8 h-8 text-fitGold" />
           </div>
           <p className="text-center max-w-xs mb-6">
             FitCommit needs access to your health data to track your progress and achievements
@@ -225,22 +237,5 @@ const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
     </div>
   );
 };
-
-const Heart: React.FC<{ className?: string }> = ({ className }) => (
-  <svg 
-    className={className} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path 
-      d="M19.5 5.25C17.5 3.25 14.5 3.5 12.5 5.5L12 6L11.5 5.5C9.5 3.5 6.5 3.25 4.5 5.25C2.5 7.25 2.5 10.5 4.5 12.5L12 20L19.5 12.5C21.5 10.5 21.5 7.25 19.5 5.25Z" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 
 export default OnboardingFlow;
