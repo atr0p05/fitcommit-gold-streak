@@ -43,7 +43,7 @@
   }
 
   body {
-    @apply bg-fitTrue text-foreground;
+    @apply bg-fitTrue text-white;
     font-feature-settings: "pnum" on, "lnum" on;
   }
 
