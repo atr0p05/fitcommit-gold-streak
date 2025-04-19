@@ -46,16 +46,24 @@
     font-feature-settings: "pnum" on, "lnum" on, "ss01" on;
   }
 
-  h1, h2, h3, h4 {
-    @apply font-serif tracking-wider uppercase text-white font-light;
+  h1 {
+    @apply font-display text-4xl font-semibold tracking-tight;
+  }
+
+  h2, h3 {
+    @apply font-sans text-2xl tracking-tight;
+  }
+
+  h4 {
+    @apply font-sans text-xl tracking-tight;
   }
 
   h5, h6 {
-    @apply font-sans tracking-wide uppercase text-white font-medium;
+    @apply font-sans text-lg;
   }
 
   p {
-    @apply font-sans text-white/90 tracking-wide leading-relaxed;
+    @apply font-sans text-lg text-white/80 tracking-tight leading-relaxed;
   }
 }
 
@@ -90,5 +98,13 @@
 
   .silver-dot {
     @apply indicator-dot bg-fitSilver;
+  }
+
+  .hero-text {
+    @apply font-display text-[5rem] leading-none tracking-tight font-semibold;
+  }
+
+  .subtitle-text {
+    @apply font-display text-2xl tracking-tight text-white/90;
   }
 }

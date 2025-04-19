@@ -89,8 +89,8 @@ export default {
         'pulse-gold': 'pulse-gold 2s ease-in-out infinite'
       },
       fontFamily: {
-        'serif': ['Georgia', 'serif'],
-        'sans': ['SF Pro Display', 'Helvetica Neue', 'sans-serif'],
+        'sans': ['SF Pro Display', 'Helvetica Neue', 'system-ui', 'sans-serif'],
+        'display': ['SF Pro Display', 'system-ui', 'sans-serif'],
       },
       spacing: {
         'premium': '24px',
@@ -99,36 +99,39 @@ export default {
         'xs': ['0.75rem', { 
           lineHeight: '1rem', 
           letterSpacing: '0.05em',
-          textTransform: 'uppercase'
         }],
         'sm': ['0.875rem', { 
           lineHeight: '1.25rem', 
           letterSpacing: '0.025em',
-          textTransform: 'uppercase'
         }],
         'base': ['1rem', { 
           lineHeight: '1.5rem', 
-          letterSpacing: '0.025em' 
+          letterSpacing: '0.01em' 
         }],
-        'lg': ['1.125rem', { 
+        'lg': ['1.25rem', { 
           lineHeight: '1.75rem', 
-          letterSpacing: '0.035em',
-          fontWeight: '300'
-        }],
-        'xl': ['1.25rem', { 
-          lineHeight: '1.75rem', 
-          letterSpacing: '0.05em',
+          letterSpacing: '0',
           fontWeight: '400'
         }],
-        '2xl': ['1.5rem', { 
+        'xl': ['1.5rem', { 
           lineHeight: '2rem', 
-          letterSpacing: '0.05em',
-          fontWeight: '300'
+          letterSpacing: '-0.01em',
+          fontWeight: '500'
         }],
-        '3xl': ['1.875rem', { 
-          lineHeight: '2.25rem', 
-          letterSpacing: '0.05em',
-          fontWeight: '200'
+        '2xl': ['2rem', { 
+          lineHeight: '2.5rem', 
+          letterSpacing: '-0.02em',
+          fontWeight: '500'
+        }],
+        '3xl': ['3rem', { 
+          lineHeight: '3.5rem', 
+          letterSpacing: '-0.02em',
+          fontWeight: '600'
+        }],
+        '4xl': ['4rem', { 
+          lineHeight: '4.5rem', 
+          letterSpacing: '-0.02em',
+          fontWeight: '600'
         }],
       }
     },

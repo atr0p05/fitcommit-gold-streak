@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -14,13 +13,13 @@ const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
   
   const steps: OnboardingStep[] = [
     {
-      title: "Welcome to FitCommit",
+      title: "Welcome to COMMITFIT",
       description: "Premium accountability for serious fitness goals",
       content: (
-        <div className="flex flex-col items-center justify-center h-64">
-          <h2 className="text-fitGold text-3xl font-serif tracking-widest uppercase mb-6">FITCOMMIT</h2>
-          <p className="text-center max-w-xs">
-            Commit to your fitness goals with financial incentives. Pay $0.99 for every missed goal.
+        <div className="flex flex-col items-center justify-center h-64 space-y-8">
+          <h1 className="hero-text">COMMITFIT</h1>
+          <p className="subtitle-text text-center max-w-md">
+            Commit to your fitness goals or pay the price
           </p>
         </div>
       )
@@ -198,7 +197,6 @@ const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
   );
 };
 
-// Make sure to add this import
 const Heart: React.FC<{ className?: string }> = ({ className }) => (
   <svg 
     className={className} 
