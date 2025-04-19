@@ -150,7 +150,7 @@ const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
           <div className="w-16 h-16 rounded-full bg-fitGold flex items-center justify-center mb-6">
             <Check className="w-8 h-8 text-fitTrue" />
           </div>
-          <h2 className="text-fitGold text-xl font-serif tracking-widest uppercase mb-3">READY TO COMMIT</h2>
+          <h2 className="text-fitGold text-xl font-display tracking-widest uppercase mb-3">READY TO COMMIT</h2>
           <p className="text-center max-w-xs mb-6">
             Your account is ready. Get moving to avoid penalties and earn achievements!
           </p>
