@@ -14,7 +14,7 @@ const Header: React.FC = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-lg border-b border-white/5">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center">
-          <h1 className="text-fitWhite text-xl font-serif tracking-widest">FITCOMMIT</h1>
+          <h1 className="text-fitWhite text-xl font-display tracking-widest">FITCOMMIT</h1>
         </div>
         
         <nav className="flex space-x-8">
@@ -28,7 +28,7 @@ const Header: React.FC = () => {
               key={item.path}
               to={item.path}
               className={cn(
-                "text-xs uppercase tracking-wider font-medium transition-colors",
+                "text-xs uppercase tracking-wider font-medium transition-colors font-display",
                 isActive(item.path) ? "text-fitWhite" : "text-fitSilver hover:text-white"
               )}
             >

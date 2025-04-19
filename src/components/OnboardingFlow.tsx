@@ -232,7 +232,7 @@ const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
             <button 
               onClick={handleNext} 
               className="btn-primary w-full"
-              disabled={currentStep === 1 && !birthday} // Disable if on birthday step and no date selected
+              disabled={currentStep === 1 && !birthday}
             >
               Continue
             </button>
