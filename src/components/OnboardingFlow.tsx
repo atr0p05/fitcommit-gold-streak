@@ -24,7 +24,7 @@ const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
       description: "Your Path to Fitness Accountability",
       content: (
         <div className="flex flex-col items-center justify-center h-64 space-y-6">
-          <h1 className="text-[4.5rem] leading-none tracking-tight font-display font-semibold">
+          <h1 className="font-display text-[4.5rem] leading-none tracking-tight font-semibold">
             FITCOMMIT
           </h1>
           <p className="text-xl tracking-tight text-white/90 font-display max-w-md text-center">
@@ -49,13 +49,18 @@ const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
               type="date"
               value={birthday}
               onChange={(e) => setBirthday(e.target.value)}
-              className="w-full max-w-xs text-center"
+              className="w-48 mx-auto text-center text-white bg-fitCharcoal border-white/20 placeholder:text-white/50"
               max={new Date().toISOString().split('T')[0]}
             />
             {birthday && (
-              <p className="text-sm text-fitSilver">
-                Target Heart Rate Zone: {Math.round(calculateMaxHeartRate(birthday) * 0.64)} - {Math.round(calculateMaxHeartRate(birthday) * 0.76)} BPM
-              </p>
+              <div className="space-y-2">
+                <p className="text-sm text-fitGold font-medium">
+                  Maximum Heart Rate: {calculateMaxHeartRate(birthday)} BPM
+                </p>
+                <p className="text-sm text-fitSilver">
+                  Target Zone: {Math.round(calculateMaxHeartRate(birthday) * 0.64)} - {Math.round(calculateMaxHeartRate(birthday) * 0.76)} BPM
+                </p>
+              </div>
             )}
           </div>
         </div>

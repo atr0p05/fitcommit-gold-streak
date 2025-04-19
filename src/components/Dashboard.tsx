@@ -1,4 +1,3 @@
-
 import React from 'react';
 import StatCircle from './StatCircle';
 import GoalCard from './GoalCard';
@@ -34,6 +33,15 @@ const Dashboard: React.FC = () => {
     },
     {
       id: 3,
+      title: "Target Heart Rate",
+      description: "30 minutes in target zone",
+      currentValue: 3,
+      targetValue: 5,
+      unit: "sessions",
+      isComplete: false
+    },
+    {
+      id: 4,
       title: "Gym Check-ins",
       description: "Visit your home gym location",
       currentValue: 3,
@@ -48,9 +56,9 @@ const Dashboard: React.FC = () => {
   
   return (
     <div className="p-4 pt-24 pb-24 max-w-md mx-auto">
+      <h2 className="font-display text-xl font-medium mb-6">Today's Performance</h2>
+      
       <section className="mb-premium">
-        <h2 className="text-xl font-medium mb-6">Today's Performance</h2>
-        
         <div className="flex justify-between items-center">
           <StatCircle
             value={stats.steps}
