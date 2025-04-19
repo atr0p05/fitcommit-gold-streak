@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,16 +53,31 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
-				}
+				// FitCommit custom colors
+				fitTrue: {
+					DEFAULT: '#000000', // true black
+					foreground: '#FFFFFF', // white text
+				},
+				fitCharcoal: {
+					DEFAULT: '#221F26', // dark charcoal for cards
+					foreground: '#FFFFFF',
+				},
+				fitGold: {
+					DEFAULT: '#D9B673', // gold accent
+					foreground: '#000000',
+				},
+				fitSilver: {
+					DEFAULT: '#9F9EA1', // silver/gray for secondary text
+					foreground: '#000000',
+				},
+				fitSuccess: {
+					DEFAULT: '#8BAA8E', // muted sage green
+					foreground: '#FFFFFF',
+				},
+				fitError: {
+					DEFAULT: '#ea384c', // deep rust red
+					foreground: '#FFFFFF',
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +100,45 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': {
+						opacity: '0'
+					},
+					'100%': {
+						opacity: '1'
+					}
+				},
+				'pulse-gold': {
+					'0%, 100%': {
+						opacity: '1'
+					},
+					'50%': {
+						opacity: '0.7'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.5s ease-out',
+				'pulse-gold': 'pulse-gold 2s ease-in-out infinite'
+			},
+			fontFamily: {
+				'serif': ['Georgia', 'serif'],
+				'sans': ['SF Pro Display', 'Helvetica', 'sans-serif'],
+			},
+			spacing: {
+				'premium': '24px',
+			},
+			fontSize: {
+				'xs': ['0.75rem', { lineHeight: '1rem', letterSpacing: '0.05em' }],
+				'sm': ['0.875rem', { lineHeight: '1.25rem', letterSpacing: '0.025em' }],
+				'base': ['1rem', { lineHeight: '1.5rem', letterSpacing: '0.025em' }],
+				'lg': ['1.125rem', { lineHeight: '1.75rem', letterSpacing: '0.025em' }],
+				'xl': ['1.25rem', { lineHeight: '1.75rem', letterSpacing: '0.05em' }],
+				'2xl': ['1.5rem', { lineHeight: '2rem', letterSpacing: '0.05em' }],
+				'3xl': ['1.875rem', { lineHeight: '2.25rem', letterSpacing: '0.05em' }],
 			}
 		}
 	},
