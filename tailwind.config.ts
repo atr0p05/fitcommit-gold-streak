@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -91,19 +90,46 @@ export default {
       },
       fontFamily: {
         'serif': ['Georgia', 'serif'],
-        'sans': ['SF Pro Display', 'Helvetica', 'sans-serif'],
+        'sans': ['SF Pro Display', 'Helvetica Neue', 'sans-serif'],
       },
       spacing: {
         'premium': '24px',
       },
       fontSize: {
-        'xs': ['0.75rem', { lineHeight: '1rem', letterSpacing: '0.05em' }],
-        'sm': ['0.875rem', { lineHeight: '1.25rem', letterSpacing: '0.025em' }],
-        'base': ['1rem', { lineHeight: '1.5rem', letterSpacing: '0.025em' }],
-        'lg': ['1.125rem', { lineHeight: '1.75rem', letterSpacing: '0.025em' }],
-        'xl': ['1.25rem', { lineHeight: '1.75rem', letterSpacing: '0.05em' }],
-        '2xl': ['1.5rem', { lineHeight: '2rem', letterSpacing: '0.05em' }],
-        '3xl': ['1.875rem', { lineHeight: '2.25rem', letterSpacing: '0.05em' }],
+        'xs': ['0.75rem', { 
+          lineHeight: '1rem', 
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase'
+        }],
+        'sm': ['0.875rem', { 
+          lineHeight: '1.25rem', 
+          letterSpacing: '0.025em',
+          textTransform: 'uppercase'
+        }],
+        'base': ['1rem', { 
+          lineHeight: '1.5rem', 
+          letterSpacing: '0.025em' 
+        }],
+        'lg': ['1.125rem', { 
+          lineHeight: '1.75rem', 
+          letterSpacing: '0.035em',
+          fontWeight: '300'
+        }],
+        'xl': ['1.25rem', { 
+          lineHeight: '1.75rem', 
+          letterSpacing: '0.05em',
+          fontWeight: '400'
+        }],
+        '2xl': ['1.5rem', { 
+          lineHeight: '2rem', 
+          letterSpacing: '0.05em',
+          fontWeight: '300'
+        }],
+        '3xl': ['1.875rem', { 
+          lineHeight: '2.25rem', 
+          letterSpacing: '0.05em',
+          fontWeight: '200'
+        }],
       }
     },
   },
