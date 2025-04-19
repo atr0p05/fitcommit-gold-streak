@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Check } from "lucide-react";
+import { Check, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Input } from "./ui/input";
 
 interface OnboardingStep {
   title: string;
@@ -10,17 +11,41 @@ interface OnboardingStep {
 
 const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [birthday, setBirthday] = useState('');
   
   const steps: OnboardingStep[] = [
     {
-      title: "Welcome to COMMITFIT",
-      description: "Premium accountability for serious fitness goals",
+      title: "Welcome to FitCommit",
+      description: "Accountability for serious fitness goals",
       content: (
-        <div className="flex flex-col items-center justify-center h-64 space-y-8">
-          <h1 className="hero-text">COMMITFIT</h1>
+        <div className="flex flex-col items-center justify-center h-64 space-y-6">
+          <h1 className="hero-text">FITCOMMIT</h1>
           <p className="subtitle-text text-center max-w-md">
-            Commit to your fitness goals or pay the price
+            Transform your goals into achievements, or pay the price
           </p>
+        </div>
+      )
+    },
+    {
+      title: "Set Your Birthday",
+      description: "We'll calculate your target heart rate zones",
+      content: (
+        <div className="flex flex-col items-center justify-center h-64 space-y-6">
+          <div className="w-16 h-16 rounded-full bg-fitCharcoal border border-white/5 flex items-center justify-center mb-2">
+            <Heart className="w-8 h-8 text-fitGold" />
+          </div>
+          <div className="text-center space-y-4">
+            <p className="text-sm text-fitSilver">
+              Your age helps us determine your optimal heart rate zones for effective training
+            </p>
+            <Input
+              type="date"
+              value={birthday}
+              onChange={(e) => setBirthday(e.target.value)}
+              className="w-full max-w-xs text-center"
+              max={new Date().toISOString().split('T')[0]}
+            />
+          </div>
         </div>
       )
     },
@@ -30,21 +55,21 @@ const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
       content: (
         <div className="space-y-4">
           <div className="flex items-center p-4 bg-fitCharcoal border border-white/5 rounded-sm">
+            <input type="checkbox" id="heartrate" className="mr-3" defaultChecked />
+            <div className="flex-1">
+              <label htmlFor="heartrate" className="text-sm font-medium">Target Heart Rate</label>
+              <p className="text-xs text-fitSilver">30 minutes in target zone, 5 times per week</p>
+            </div>
+            <span className="text-xs text-fitSilver">5 sessions</span>
+          </div>
+          
+          <div className="flex items-center p-4 bg-fitCharcoal border border-white/5 rounded-sm">
             <input type="checkbox" id="steps" className="mr-3" defaultChecked />
             <div className="flex-1">
               <label htmlFor="steps" className="text-sm font-medium">Daily Steps</label>
               <p className="text-xs text-fitSilver">Track your steps via HealthKit integration</p>
             </div>
             <span className="text-xs text-fitSilver">10,000 steps</span>
-          </div>
-          
-          <div className="flex items-center p-4 bg-fitCharcoal border border-white/5 rounded-sm">
-            <input type="checkbox" id="workouts" className="mr-3" defaultChecked />
-            <div className="flex-1">
-              <label htmlFor="workouts" className="text-sm font-medium">Weekly Workouts</label>
-              <p className="text-xs text-fitSilver">Track your weekly workout sessions</p>
-            </div>
-            <span className="text-xs text-fitSilver">5 per week</span>
           </div>
           
           <div className="flex items-center p-4 bg-fitCharcoal border border-white/5 rounded-sm">
@@ -177,7 +202,7 @@ const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
       
       <div className="flex-1 p-premium flex flex-col">
         <div className="mb-8">
-          <h2 className="text-xl uppercase tracking-wider mb-1">{currentStepData.title}</h2>
+          <h2 className="text-xl font-display uppercase tracking-wider mb-1">{currentStepData.title}</h2>
           <p className="text-sm text-fitSilver">{currentStepData.description}</p>
         </div>
         
@@ -187,7 +212,11 @@ const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
         
         {currentStep < steps.length - 1 && (
           <div className="mt-8">
-            <button onClick={handleNext} className="btn-primary w-full">
+            <button 
+              onClick={handleNext} 
+              className="btn-primary w-full"
+              disabled={currentStep === 1 && !birthday} // Disable if on birthday step and no date selected
+            >
               Continue
             </button>
           </div>

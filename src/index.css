@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -51,15 +52,15 @@
   }
 
   h2, h3 {
-    @apply font-sans text-2xl tracking-tight;
+    @apply font-display text-2xl tracking-tight;
   }
 
   h4 {
-    @apply font-sans text-xl tracking-tight;
+    @apply font-display text-xl tracking-tight;
   }
 
   h5, h6 {
-    @apply font-sans text-lg;
+    @apply font-sans text-lg tracking-tight;
   }
 
   p {
@@ -101,10 +102,10 @@
   }
 
   .hero-text {
-    @apply font-display text-[5rem] leading-none tracking-tight font-semibold;
+    @apply font-display text-[4.5rem] leading-none tracking-tight font-semibold;
   }
 
   .subtitle-text {
-    @apply font-display text-2xl tracking-tight text-white/90;
+    @apply font-display text-xl tracking-tight text-white/90;
   }
 }
