@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -12,7 +13,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Monochromatic color palette
+        // Black and white color palette
         fitTrue: {
           DEFAULT: '#000000', // true black
           foreground: '#FFFFFF', // white text
@@ -41,6 +42,7 @@ export default {
           DEFAULT: '#333333', // deep dark gray for errors
           foreground: '#FFFFFF',
         },
+        border: "#555555", // Adding the border color
       },
       borderRadius: {
         lg: 'var(--radius)',

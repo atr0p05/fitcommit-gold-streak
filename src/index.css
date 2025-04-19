@@ -8,30 +8,30 @@
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
 
-    --card: 250 10% 14%;
+    --card: 0 0% 13%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 250 10% 14%;
+    --popover: 0 0% 13%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 43 57% 65%;
+    --primary: 0 0% 95%;
     --primary-foreground: 0 0% 0%;
 
-    --secondary: 240 1% 63%;
+    --secondary: 0 0% 53%;
     --secondary-foreground: 0 0% 0%;
 
-    --muted: 250 10% 14%;
-    --muted-foreground: 240 1% 63%;
+    --muted: 0 0% 13%;
+    --muted-foreground: 0 0% 53%;
 
-    --accent: 43 57% 65%;
+    --accent: 0 0% 95%;
     --accent-foreground: 0 0% 0%;
 
-    --destructive: 351 81% 57%;
+    --destructive: 0 0% 20%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 240 1% 30%;
-    --input: 240 1% 30%;
-    --ring: 43 57% 65%;
+    --border: 0 0% 33%;
+    --input: 0 0% 33%;
+    --ring: 0 0% 95%;
 
     --radius: 0.125rem;
   }
@@ -39,7 +39,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-[#555555];
   }
 
   body {
@@ -62,7 +62,7 @@
 
 @layer components {
   .stat-circle {
-    @apply relative flex items-center justify-center rounded-full border border-fitGold/30 bg-fitCharcoal;
+    @apply relative flex items-center justify-center rounded-full border border-fitSilver/30 bg-fitCharcoal;
   }
 
   .divider {
@@ -70,7 +70,7 @@
   }
 
   .btn-primary {
-    @apply bg-fitGold text-fitTrue px-6 py-3 rounded-sm uppercase tracking-widest text-sm font-medium transition-colors hover:bg-fitGold/90;
+    @apply bg-fitWhite text-fitTrue px-6 py-3 rounded-sm uppercase tracking-widest text-sm font-medium transition-colors hover:bg-fitWhite/90;
   }
 
   .btn-secondary {
@@ -86,7 +86,7 @@
   }
 
   .gold-dot {
-    @apply indicator-dot bg-fitGold;
+    @apply indicator-dot bg-fitWhite;
   }
 
   .silver-dot {

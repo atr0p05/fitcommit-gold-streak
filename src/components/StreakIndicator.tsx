@@ -21,14 +21,14 @@ const StreakIndicator: React.FC<StreakIndicatorProps> = ({
       </div>
       
       <div className="flex items-center mt-4">
-        <span className="text-3xl font-medium text-fitGold mr-4">{streakCount}</span>
+        <span className="text-3xl font-medium text-fitWhite mr-4">{streakCount}</span>
         <div className="flex space-x-1.5">
           {streakDays.map((active, index) => (
             <div 
               key={index}
               className={cn(
                 "w-2 h-2 rounded-full transition-colors",
-                active ? "bg-fitGold" : "bg-white/20"
+                active ? "bg-fitWhite" : "bg-white/20"
               )}
             />
           ))}
