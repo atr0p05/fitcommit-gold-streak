@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -171,9 +170,10 @@ const PerformanceHistory = () => {
                   }}
                   modifiersStyles={{
                     workout: {
-                      border: '2px solid #FFFFFF',
-                      borderRadius: '4px',
-                      backgroundColor: 'transparent'
+                      backgroundColor: 'white',
+                      color: 'black',
+                      borderRadius: '9999px',
+                      fontWeight: '600'
                     }
                   }}
                   disabled
