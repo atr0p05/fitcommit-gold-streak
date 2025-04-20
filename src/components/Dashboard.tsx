@@ -9,11 +9,23 @@ const Dashboard: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   
   useEffect(() => {
-    // Ensure component stays mounted
     setIsLoaded(true);
     
-    // Cleanup function that doesn't unmount the component
-    return () => {};
+    const handleScroll = () => {
+      const elements = document.querySelectorAll('.animate-on-scroll');
+      elements.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const isVisible = rect.top <= window.innerHeight * 0.85;
+        if (isVisible) {
+          el.classList.add('animate-in');
+        }
+      });
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+    
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
   // Mock data for demonstration
@@ -71,8 +83,8 @@ const Dashboard: React.FC = () => {
         Today's Performance
       </h2>
       
-      <section className={`mb-8 rounded-xl p-6 shadow-2xl transition-all duration-700 overflow-hidden relative ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1A1F2C] to-[#2C3444] opacity-95" />
+      <section className={`animate-on-scroll mb-8 rounded-xl p-6 shadow-2xl transition-all duration-700 overflow-hidden relative ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#222222] to-[#333333] opacity-95" />
         <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
         
         <div className="relative z-10 flex flex-col space-y-6">
@@ -82,66 +94,66 @@ const Dashboard: React.FC = () => {
               total={10000}
               label="Steps"
               size="lg"
-              colorClass="text-[#9b87f5]"
+              colorClass="text-white"
               animate
             />
           </div>
           
           <div className="grid grid-cols-1 gap-4">
-            <div className={`flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/10 transition-all duration-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`} style={{transitionDelay: '200ms'}}>
-              <div className="w-12 h-12 rounded-full bg-[#9b87f5]/10 flex items-center justify-center mr-4">
-                <Heart className="w-6 h-6 text-[#9b87f5]" />
+            {[
+              { icon: Heart, label: "Avg. Heart Rate", value: stats.heartRate, unit: "bpm", color: "text-white" },
+              { icon: Calendar, label: "Week Streak", value: 14, unit: "days", color: "text-white" },
+              { icon: Star, label: "Calories Burned", value: stats.calories, unit: "kcal", color: "text-white" }
+            ].map((stat, index) => (
+              <div 
+                key={stat.label}
+                className={`animate-on-scroll flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/10 transition-all duration-500 ${
+                  isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                }`}
+                style={{transitionDelay: `${200 * (index + 1)}ms`}}
+              >
+                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mr-4">
+                  <stat.icon className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-xs text-[#8E9196] font-medium uppercase tracking-wide">{stat.label}</p>
+                  <p className="text-xl font-medium text-white">{stat.value} <span className="text-sm text-[#8E9196]">{stat.unit}</span></p>
+                </div>
               </div>
-              <div>
-                <p className="text-xs text-[#8E9196] font-medium uppercase tracking-wide">Avg. Heart Rate</p>
-                <p className="text-xl font-medium text-white">{stats.heartRate} <span className="text-sm text-[#8E9196]">bpm</span></p>
-              </div>
-            </div>
-            
-            <div className={`flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/10 transition-all duration-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`} style={{transitionDelay: '400ms'}}>
-              <div className="w-12 h-12 rounded-full bg-[#7E69AB]/10 flex items-center justify-center mr-4">
-                <Calendar className="w-6 h-6 text-[#7E69AB]" />
-              </div>
-              <div>
-                <p className="text-xs text-[#8E9196] font-medium uppercase tracking-wide">Week Streak</p>
-                <p className="text-xl font-medium text-white">14 <span className="text-sm text-[#8E9196]">days</span></p>
-              </div>
-            </div>
-            
-            <div className={`flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/10 transition-all duration-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`} style={{transitionDelay: '600ms'}}>
-              <div className="w-12 h-12 rounded-full bg-[#6E59A5]/10 flex items-center justify-center mr-4">
-                <Star className="w-6 h-6 text-[#6E59A5]" />
-              </div>
-              <div>
-                <p className="text-xs text-[#8E9196] font-medium uppercase tracking-wide">Calories Burned</p>
-                <p className="text-xl font-medium text-white">{stats.calories} <span className="text-sm text-[#8E9196]">kcal</span></p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
       
-      <section className="mb-premium">
+      <section className="animate-on-scroll mb-8">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-medium tracking-tight">Active Goals</h2>
           <span className="text-xs text-[#8E9196] uppercase tracking-wider">This Week</span>
         </div>
         
         <div className="space-y-4">
-          {goals.map(goal => (
-            <GoalCard key={goal.id} {...goal} />
+          {goals.map((goal, index) => (
+            <div
+              key={goal.id}
+              className="animate-on-scroll"
+              style={{transitionDelay: `${100 * index}ms`}}
+            >
+              <GoalCard {...goal} />
+            </div>
           ))}
         </div>
       </section>
       
-      <StreakIndicator 
-        streakCount={14} 
-        streakDays={streakDays} 
-      />
+      <div className="animate-on-scroll">
+        <StreakIndicator 
+          streakCount={14} 
+          streakDays={streakDays} 
+        />
+      </div>
       
-      <div className="mt-8 text-center">
+      <div className="animate-on-scroll mt-8 text-center">
         <p className="text-xs text-[#8E9196] uppercase tracking-widest mb-4">Financial Commitment</p>
-        <p className="text-sm">You've avoided <span className="text-[#9b87f5]">$12.87</span> in penalties this month</p>
+        <p className="text-sm">You've avoided <span className="text-white">$12.87</span> in penalties this month</p>
       </div>
     </div>
   );

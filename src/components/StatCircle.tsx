@@ -17,7 +17,7 @@ const StatCircle: React.FC<StatCircleProps> = ({
   total = 100,
   label,
   size = 'md',
-  colorClass = 'text-[#9b87f5]',
+  colorClass = 'text-white',
   className,
   animate = false,
 }) => {
