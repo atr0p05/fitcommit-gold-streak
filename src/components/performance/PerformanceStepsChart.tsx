@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 import { HealthData } from "@/utils/healthService";
-import { format } from 'date-fns';
+import { parseISO, format } from 'date-fns';
 
 interface PerformanceStepsChartProps {
   stepsData: HealthData[];
@@ -11,11 +11,6 @@ interface PerformanceStepsChartProps {
 }
 
 const PerformanceStepsChart: React.FC<PerformanceStepsChartProps> = ({ stepsData, loading }) => {
-  const formatDateString = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return format(date, 'MMM d');
-  };
-
   if (loading) {
     return (
       <div className="h-[200px] flex items-center justify-center">
@@ -32,21 +27,31 @@ const PerformanceStepsChart: React.FC<PerformanceStepsChartProps> = ({ stepsData
     );
   }
 
+  // Ensure data is sorted and includes all dates
+  const processedData = stepsData.map(data => ({
+    ...data,
+    date: format(parseISO(data.date), 'MMM d'),
+  }));
+
   return (
     <ChartContainer config={{}} className="h-[200px]">
       <LineChart 
-        data={stepsData.map(data => ({
-          ...data,
-          date: formatDateString(data.date)
-        }))} 
+        data={processedData} 
         margin={{ top: 5, right: 10, left: 10, bottom: 0 }}
       >
+        <CartesianGrid 
+          horizontal={false} 
+          vertical={false} 
+          strokeDasharray="3 3" 
+        />
         <XAxis
           dataKey="date"
           stroke="#888888"
           fontSize={12}
           tickLine={false}
           axisLine={false}
+          interval="preserveStartEnd"
+          padding={{ left: 20, right: 20 }}
         />
         <YAxis
           stroke="#888888"
@@ -56,7 +61,13 @@ const PerformanceStepsChart: React.FC<PerformanceStepsChartProps> = ({ stepsData
           tickFormatter={(value) => `${value}`}
         />
         <ChartTooltip />
-        <Line type="monotone" dataKey="value" strokeWidth={2} dot={false} />
+        <Line 
+          type="monotone" 
+          dataKey="value" 
+          strokeWidth={2} 
+          dot={false} 
+          stroke="#8884d8"
+        />
       </LineChart>
     </ChartContainer>
   );
