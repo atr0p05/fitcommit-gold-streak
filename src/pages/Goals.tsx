@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import GoalCard from '@/components/GoalCard';
@@ -80,9 +81,9 @@ const Goals = () => {
             {dailyGoals.map((goal, index) => (
               <div
                 key={goal.id}
-                className={`transition-all duration-50 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
+                className={`transition-all duration-900 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
                 style={{
-                  transitionDelay: `${50 * (index + 1)}ms`,
+                  transitionDelay: `${150 * (index + 1)}ms`,
                 }}
               >
                 <GoalCard {...goal} />
@@ -104,9 +105,9 @@ const Goals = () => {
             {weeklyGoals.map((goal, index) => (
               <div
                 key={goal.id}
-                className={`transition-all duration-50 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
+                className={`transition-all duration-900 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
                 style={{
-                  transitionDelay: `${50 * (index + 1)}ms`,
+                  transitionDelay: `${150 * (index + 1)}ms`,
                 }}
               >
                 <GoalCard {...goal} />
