@@ -170,15 +170,15 @@ const PerformanceHistory = () => {
                   }}
                   modifiersStyles={{
                     workout: {
-                      backgroundColor: 'var(--fitGold)',
-                      color: 'black',
+                      backgroundColor: '#FFFFFF',
+                      color: '#000000',
                       fontWeight: '500'
                     }
                   }}
                   disabled
                   footer={
                     <div className="mt-3 flex items-center justify-center gap-2 text-sm">
-                      <CalendarCheck className="h-4 w-4 text-fitGold" />
+                      <CalendarCheck className="h-4 w-4 text-white" />
                       <span>{healthData.workouts.length} workouts this month</span>
                     </div>
                   }
