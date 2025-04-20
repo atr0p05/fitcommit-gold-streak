@@ -10,26 +10,30 @@ import { healthService, HealthData } from "@/utils/healthService";
 import { useToast } from "@/hooks/use-toast";
 import { format } from 'date-fns';
 
-// Custom CSS classes for the Calendar component
-const calendarStyles = {
-  workoutDay: {
-    position: 'relative',
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      width: '32px',
-      height: '32px',
-      borderRadius: '50%',
-      backgroundColor: 'white',
-      zIndex: '-1',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)'
-    },
-    color: 'black',
-    fontWeight: 'bold'
+// Define CSS styles for the calendar
+const calendarWorkoutDayStyle = `
+  .workout-day {
+    position: relative;
   }
-};
+  .workout-day button {
+    color: black !important;
+    font-weight: 600 !important;
+    z-index: 2;
+    position: relative;
+  }
+  .workout-day::before {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+`;
 
 const PerformanceHistory = () => {
   const { toast } = useToast();
@@ -184,29 +188,9 @@ const PerformanceHistory = () => {
               </div>
             ) : healthData.workouts.length > 0 ? (
               <div className="flex flex-col items-center space-y-4">
-                <style jsx>{`
-                  .workout-day {
-                    position: relative;
-                  }
-                  .workout-day button {
-                    color: black !important;
-                    font-weight: 600 !important;
-                    z-index: 2;
-                    position: relative;
-                  }
-                  .workout-day::before {
-                    content: '';
-                    position: absolute;
-                    width: 30px;
-                    height: 30px;
-                    background-color: white;
-                    border-radius: 100%;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    z-index: 1;
-                  }
-                `}</style>
+                {/* Add the CSS styles in a standard style tag */}
+                <style dangerouslySetInnerHTML={{ __html: calendarWorkoutDayStyle }} />
+                
                 <Calendar
                   mode="single"
                   className="rounded-md border pointer-events-auto"
