@@ -20,7 +20,7 @@ const Index = () => {
       .animate-on-scroll {
         opacity: 0;
         transform: translateY(20px);
-        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        transition: opacity 0.05s ease-out, transform 0.05s ease-out;
       }
       .animate-on-scroll.animate-in {
         opacity: 1;

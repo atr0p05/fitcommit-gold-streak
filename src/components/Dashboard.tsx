@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import StatCircle from './StatCircle';
 import GoalCard from './GoalCard';
@@ -8,7 +9,10 @@ const Dashboard: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   
   useEffect(() => {
-    setIsLoaded(true);
+    // Immediately set loaded state
+    setTimeout(() => {
+      setIsLoaded(true);
+    }, 10); // tiny delay for DOM to be ready
     
     const handleScroll = () => {
       const elements = document.querySelectorAll('.animate-on-scroll');
@@ -19,13 +23,14 @@ const Dashboard: React.FC = () => {
         if (isVisible) {
           setTimeout(() => {
             el.classList.add('animate-in');
-          }, index * 50);
+          }, index * 20); // faster stagger between elements
         }
       });
     };
     
     window.addEventListener('scroll', handleScroll, { passive: true });
-    setTimeout(handleScroll, 100);
+    // Run this sooner
+    setTimeout(handleScroll, 30);
     
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -79,11 +84,11 @@ const Dashboard: React.FC = () => {
   
   return (
     <div className="p-4 pt-24 pb-24 max-w-md mx-auto">
-      <h2 className={`font-display text-xl font-medium mb-6 text-center tracking-tight transition-all duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+      <h2 className={`font-display text-xl font-medium mb-6 text-center tracking-tight transition-all duration-200 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
         Today's Performance
       </h2>
       
-      <section className={`mb-8 rounded-xl p-6 shadow-2xl transition-all duration-700 overflow-hidden relative ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <section className={`mb-8 rounded-xl p-6 shadow-2xl overflow-hidden relative transition-all duration-300 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} style={{transformOrigin: 'center top'}}>
         <div className="absolute inset-0 bg-gradient-to-br from-[#222222] to-[#333333] opacity-95" />
         <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
         
@@ -107,11 +112,11 @@ const Dashboard: React.FC = () => {
             ].map((stat, index) => (
               <div 
                 key={stat.label}
-                className={`animate-on-scroll flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/10 transition-all duration-1000 ease-out ${
+                className={`animate-on-scroll flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/10 transition-all duration-300 ease-out ${
                   isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
                 }`}
                 style={{
-                  transitionDelay: `${200 * (index + 1)}ms`,
+                  transitionDelay: `${50 * (index + 1)}ms`,
                   willChange: 'transform, opacity'
                 }}
               >
@@ -128,7 +133,7 @@ const Dashboard: React.FC = () => {
         </div>
       </section>
       
-      <section className="animate-on-scroll mb-8">
+      <section className="mb-8">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-medium tracking-tight">Active Goals</h2>
           <span className="text-xs text-[#8E9196] uppercase tracking-wider">This Week</span>
@@ -140,7 +145,7 @@ const Dashboard: React.FC = () => {
               key={goal.id}
               className="animate-on-scroll"
               style={{
-                transitionDelay: `${150 * index}ms`,
+                transitionDelay: `${30 * index}ms`,
                 willChange: 'transform, opacity'
               }}
             >
