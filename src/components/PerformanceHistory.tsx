@@ -110,9 +110,14 @@ const PerformanceHistory = () => {
     }
   };
 
-  const workoutDates = healthData.workouts.map(workout => 
-    new Date(workout.date)
-  );
+  // Convert workout data dates to Date objects
+  // Make sure we're properly parsing string dates into Date objects
+  const workoutDates = healthData.workouts.map(workout => {
+    // Ensure we have proper Date objects
+    const workoutDate = new Date(workout.date);
+    console.log('Workout date:', workoutDate);
+    return workoutDate;
+  });
 
   return (
     <Card className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -194,11 +199,11 @@ const PerformanceHistory = () => {
                 <Calendar
                   mode="single"
                   className="rounded-md border pointer-events-auto"
-                  modifiers={{
-                    workout: workoutDates
-                  }}
                   modifiersClassNames={{
                     workout: "workout-day"
+                  }}
+                  modifiers={{
+                    workout: workoutDates
                   }}
                   disabled
                   footer={
