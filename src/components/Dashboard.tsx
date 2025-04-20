@@ -1,3 +1,4 @@
+
 import React from 'react';
 import StatCircle from './StatCircle';
 import GoalCard from './GoalCard';
@@ -56,47 +57,49 @@ const Dashboard: React.FC = () => {
   
   return (
     <div className="p-4 pt-24 pb-24 max-w-md mx-auto">
-      <h2 className="font-display text-xl font-medium mb-6">Today's Performance</h2>
+      <h2 className="font-display text-xl font-medium mb-6 text-center">Today's Performance</h2>
       
-      <section className="mb-premium">
-        <div className="flex justify-between items-center">
-          <StatCircle
-            value={stats.steps}
-            total={10000}
-            label="Steps"
-            size="md"
-            colorClass="text-fitGold"
-            animate
-          />
+      <section className="mb-8 bg-fitCharcoal rounded-xl p-6 shadow-lg border border-white/5">
+        <div className="flex flex-col space-y-6">
+          <div className="flex justify-center mb-2">
+            <StatCircle
+              value={stats.steps}
+              total={10000}
+              label="Steps"
+              size="lg"
+              colorClass="text-[#0EA5E9]"
+              animate
+            />
+          </div>
           
-          <div className="flex flex-col space-y-6">
-            <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-fitCharcoal border border-white/5 flex items-center justify-center mr-3">
-                <Heart className="w-5 h-5 text-fitGold" />
+          <div className="grid grid-cols-1 gap-4">
+            <div className="flex items-center bg-black/20 p-4 rounded-lg">
+              <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/10 flex items-center justify-center mr-4">
+                <Heart className="w-6 h-6 text-[#0EA5E9]" />
               </div>
               <div>
-                <p className="text-xs text-fitSilver">Avg. Heart Rate</p>
-                <p className="text-lg font-medium">{stats.heartRate} <span className="text-xs text-fitSilver">bpm</span></p>
+                <p className="text-xs text-fitSilver font-medium uppercase tracking-wide">Avg. Heart Rate</p>
+                <p className="text-xl font-medium">{stats.heartRate} <span className="text-sm text-fitSilver">bpm</span></p>
               </div>
             </div>
             
-            <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-fitCharcoal border border-white/5 flex items-center justify-center mr-3">
-                <Calendar className="w-5 h-5 text-fitGold" />
+            <div className="flex items-center bg-black/20 p-4 rounded-lg">
+              <div className="w-12 h-12 rounded-full bg-[#F97316]/10 flex items-center justify-center mr-4">
+                <Calendar className="w-6 h-6 text-[#F97316]" />
               </div>
               <div>
-                <p className="text-xs text-fitSilver">Week Streak</p>
-                <p className="text-lg font-medium">14 <span className="text-xs text-fitSilver">days</span></p>
+                <p className="text-xs text-fitSilver font-medium uppercase tracking-wide">Week Streak</p>
+                <p className="text-xl font-medium">14 <span className="text-sm text-fitSilver">days</span></p>
               </div>
             </div>
             
-            <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-fitCharcoal border border-white/5 flex items-center justify-center mr-3">
-                <Star className="w-5 h-5 text-fitGold" />
+            <div className="flex items-center bg-black/20 p-4 rounded-lg">
+              <div className="w-12 h-12 rounded-full bg-[#8B5CF6]/10 flex items-center justify-center mr-4">
+                <Star className="w-6 h-6 text-[#8B5CF6]" />
               </div>
               <div>
-                <p className="text-xs text-fitSilver">Calories Burned</p>
-                <p className="text-lg font-medium">{stats.calories} <span className="text-xs text-fitSilver">kcal</span></p>
+                <p className="text-xs text-fitSilver font-medium uppercase tracking-wide">Calories Burned</p>
+                <p className="text-xl font-medium">{stats.calories} <span className="text-sm text-fitSilver">kcal</span></p>
               </div>
             </div>
           </div>
