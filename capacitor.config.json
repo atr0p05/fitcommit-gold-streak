@@ -4,6 +4,16 @@
   "appName": "FitCommit",
   "webDir": "dist",
   "bundledWebRuntime": false,
-
+  "plugins": {
+    "CapacitorHealth": {
+      "ios": {
+        "healthSharePermission": "FitCommit needs access to your health data to track your fitness goals and achievements",
+        "healthUpdatePermission": "FitCommit will update your health data to ensure accurate tracking and record keeping"
+      }
+    }
+  },
+  "server": {
+    "url": "https://665782f6-3962-4153-8df2-9ab0a2549747.lovableproject.com?forceHideBadge=true",
+    "cleartext": true
   }
-
+}

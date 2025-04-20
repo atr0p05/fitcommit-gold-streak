@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Heart as HeartIcon, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "./ui/input";
+import { healthService } from "@/utils/healthService";
+import { useToast } from "@/components/ui/use-toast";
 
 interface OnboardingStep {
   title: string;
@@ -12,10 +14,41 @@ interface OnboardingStep {
 const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [birthday, setBirthday] = useState('');
+  const [isConnectingHealth, setIsConnectingHealth] = useState(false);
+  const { toast } = useToast();
   
   const calculateMaxHeartRate = (birthDate: string) => {
     const age = new Date().getFullYear() - new Date(birthDate).getFullYear();
     return 220 - age;
+  };
+
+  const handleConnectHealth = async () => {
+    try {
+      setIsConnectingHealth(true);
+      const success = await healthService.requestAuthorization();
+      
+      if (success) {
+        toast({
+          title: "Connected to Apple Health",
+          description: "Your health data will now be synchronized with FitCommit.",
+        });
+      } else {
+        toast({
+          title: "Connection Failed",
+          description: "Could not connect to Apple Health. You can try again later in settings.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Error connecting to Health:', error);
+      toast({
+        title: "Connection Error",
+        description: "An error occurred while connecting to Apple Health.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsConnectingHealth(false);
+    }
   };
 
   const steps: OnboardingStep[] = [
@@ -111,10 +144,14 @@ const OnboardingFlow: React.FC<{ onComplete: () => void }> = ({ onComplete }) =>
           <p className="text-center max-w-xs mb-6">
             FitCommit needs access to your health data to track your progress and achievements
           </p>
-          <button className="btn-primary mb-3 w-full">
-            Connect Apple Health
+          <button 
+            className={`btn-primary mb-3 w-full ${isConnectingHealth ? 'opacity-70' : ''}`}
+            onClick={handleConnectHealth}
+            disabled={isConnectingHealth}
+          >
+            {isConnectingHealth ? 'Connecting...' : 'Connect Apple Health'}
           </button>
-          <button className="btn-secondary w-full">
+          <button className="btn-secondary w-full" onClick={() => setCurrentStep(currentStep + 1)}>
             Skip for Now
           </button>
         </div>
