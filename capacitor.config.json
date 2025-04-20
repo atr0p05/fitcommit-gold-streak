@@ -1,0 +1,6 @@
+{
+  "appId": "com.fitcommit.app",
+  "appName": "FitCommit",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
