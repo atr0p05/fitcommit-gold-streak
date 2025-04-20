@@ -1,32 +1,22 @@
 
 import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import {
   Sidebar,
   SidebarContent,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
 } from '@/components/ui/sidebar';
-import { cn } from '@/lib/utils';
+import NavigationItem from './mobile/NavigationItem';
+import { navigationItems } from '@/config/navigation';
 
 interface MobileNavigationProps {
   open: boolean;
   onClose: () => void;
 }
 
-const MobileNavigation: React.FC<MobileNavigationProps> = ({ open, onClose }) => {
+const MobileNavigation: React.FC<MobileNavigationProps> = ({ onClose }) => {
   const location = useLocation();
-
-  const navigationItems = [
-    { path: '/', label: 'Home' },
-    { path: '/goals', label: 'Goals' },
-    { path: '/friends', label: 'Friends' },
-    { path: '/achievements', label: 'Achievements' },
-    { path: '/settings', label: 'Settings' },
-  ];
-
   const isActive = (path: string) => location.pathname === path;
 
   return (
@@ -37,23 +27,13 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({ open, onClose }) =>
       <SidebarContent>
         <SidebarMenu>
           {navigationItems.map((item) => (
-            <SidebarMenuItem key={item.path}>
-              <SidebarMenuButton
-                asChild
-                isActive={isActive(item.path)}
-                onClick={onClose}
-              >
-                <Link
-                  to={item.path}
-                  className={cn(
-                    "w-full text-sm font-medium",
-                    isActive(item.path) ? "text-fitWhite" : "text-fitSilver"
-                  )}
-                >
-                  {item.label}
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+            <NavigationItem
+              key={item.path}
+              path={item.path}
+              label={item.label}
+              isActive={isActive(item.path)}
+              onClose={onClose}
+            />
           ))}
         </SidebarMenu>
       </SidebarContent>
