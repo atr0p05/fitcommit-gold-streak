@@ -32,6 +32,7 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({ onClose }) => {
                 key={item.path}
                 path={item.path}
                 label={item.label}
+                icon={item.icon}
                 isActive={isActive(item.path)}
                 onClose={onClose}
               />
