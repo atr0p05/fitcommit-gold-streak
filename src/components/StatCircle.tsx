@@ -33,22 +33,26 @@ const StatCircle: React.FC<StatCircleProps> = ({
   };
   
   return (
-    <div className={cn("flex flex-col items-center justify-center", className)}>
+    <div className={cn(
+      "flex flex-col items-center justify-center transform transition-all duration-700 opacity-0 translate-y-4",
+      "animate-[enter_0.7s_ease-out_forwards]",
+      className
+    )}>
       <div className={cn(
-        "relative flex items-center justify-center rounded-full bg-black/20 backdrop-blur-sm border border-white/5",
+        "relative flex items-center justify-center rounded-full backdrop-blur-sm border border-white/10",
+        "bg-gradient-to-br from-black/40 to-black/20",
+        "shadow-[0_8px_16px_rgba(0,0,0,0.5)]",
         sizeClasses[size]
       )}>
         <svg className="absolute inset-0 transform -rotate-90" viewBox="0 0 100 100">
-          {/* Background circle */}
           <circle
             cx="50"
             cy="50"
             r={radius}
             fill="transparent"
-            stroke="rgba(255, 255, 255, 0.05)"
+            stroke="rgba(255, 255, 255, 0.03)"
             strokeWidth="4"
           />
-          {/* Progress circle */}
           <circle
             cx="50"
             cy="50"
@@ -58,14 +62,25 @@ const StatCircle: React.FC<StatCircleProps> = ({
             strokeWidth="4"
             strokeDasharray={circumference}
             strokeDashoffset={circumference - dash}
-            className={cn(colorClass, animate && "transition-all duration-1000")}
+            className={cn(
+              colorClass,
+              animate && "transition-all duration-1000 ease-out",
+              "animate-[stroke-progress_1.5s_ease-out_forwards]"
+            )}
           />
         </svg>
-        <span className={cn("font-sans font-medium relative z-10", colorClass)}>{value}</span>
+        <span className={cn(
+          "font-sans font-medium relative z-10",
+          colorClass,
+          "text-shadow-lg"
+        )}>{value}</span>
       </div>
-      <span className="text-xs uppercase tracking-widest text-[#8E9196] mt-2">{label}</span>
+      <span className="text-xs uppercase tracking-widest text-[#8E9196] mt-2 transform transition-all duration-500 opacity-0 translate-y-2 animate-[fade-up_0.5s_ease-out_0.3s_forwards]">
+        {label}
+      </span>
     </div>
   );
 };
 
 export default StatCircle;
+

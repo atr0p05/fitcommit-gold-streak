@@ -57,10 +57,15 @@ const Dashboard: React.FC = () => {
   
   return (
     <div className="p-4 pt-24 pb-24 max-w-md mx-auto">
-      <h2 className="font-display text-xl font-medium mb-6 text-center tracking-tight">Today's Performance</h2>
+      <h2 className="font-display text-xl font-medium mb-6 text-center tracking-tight opacity-0 animate-[fade-in_0.5s_ease-out_0.2s_forwards]">
+        Today's Performance
+      </h2>
       
-      <section className="mb-8 bg-gradient-to-br from-[#1A1F2C] to-[#2C3444] rounded-xl p-6 shadow-2xl border border-white/5">
-        <div className="flex flex-col space-y-6">
+      <section className="mb-8 rounded-xl p-6 shadow-2xl transform transition-all duration-700 opacity-0 translate-y-4 animate-[enter_0.7s_ease-out_0.3s_forwards] overflow-hidden relative">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#1A1F2C] to-[#2C3444] opacity-95" />
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
+        
+        <div className="relative z-10 flex flex-col space-y-6">
           <div className="flex justify-center mb-2">
             <StatCircle
               value={stats.steps}
@@ -73,7 +78,7 @@ const Dashboard: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-1 gap-4">
-            <div className="flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/5">
+            <div className="flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/10 transform transition-all duration-500 opacity-0 translate-y-2 animate-[fade-up_0.5s_ease-out_0.6s_forwards]">
               <div className="w-12 h-12 rounded-full bg-[#9b87f5]/10 flex items-center justify-center mr-4">
                 <Heart className="w-6 h-6 text-[#9b87f5]" />
               </div>
@@ -83,7 +88,7 @@ const Dashboard: React.FC = () => {
               </div>
             </div>
             
-            <div className="flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/5">
+            <div className="flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/10 transform transition-all duration-500 opacity-0 translate-y-2 animate-[fade-up_0.5s_ease-out_0.8s_forwards]">
               <div className="w-12 h-12 rounded-full bg-[#7E69AB]/10 flex items-center justify-center mr-4">
                 <Calendar className="w-6 h-6 text-[#7E69AB]" />
               </div>
@@ -93,7 +98,7 @@ const Dashboard: React.FC = () => {
               </div>
             </div>
             
-            <div className="flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/5">
+            <div className="flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/10 transform transition-all duration-500 opacity-0 translate-y-2 animate-[fade-up_0.5s_ease-out_1s_forwards]">
               <div className="w-12 h-12 rounded-full bg-[#6E59A5]/10 flex items-center justify-center mr-4">
                 <Star className="w-6 h-6 text-[#6E59A5]" />
               </div>
@@ -133,3 +138,4 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
+
