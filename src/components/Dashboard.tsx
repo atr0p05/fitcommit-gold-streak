@@ -13,16 +13,21 @@ const Dashboard: React.FC = () => {
     
     const handleScroll = () => {
       const elements = document.querySelectorAll('.animate-on-scroll');
-      elements.forEach((el) => {
+      elements.forEach((el, index) => {
         const rect = el.getBoundingClientRect();
         const isVisible = rect.top <= window.innerHeight * 0.85;
+        
         if (isVisible) {
-          el.classList.add('animate-in');
+          // Add staggered delay based on element index
+          setTimeout(() => {
+            el.classList.add('animate-in');
+          }, index * 150); // 150ms stagger between elements
         }
       });
     };
     
-    window.addEventListener('scroll', handleScroll);
+    // Use passive scroll listener for better performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // Initial check
     
     return () => window.removeEventListener('scroll', handleScroll);
@@ -79,11 +84,11 @@ const Dashboard: React.FC = () => {
   
   return (
     <div className="p-4 pt-24 pb-24 max-w-md mx-auto">
-      <h2 className={`font-display text-xl font-medium mb-6 text-center tracking-tight transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+      <h2 className={`font-display text-xl font-medium mb-6 text-center tracking-tight transition-all duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
         Today's Performance
       </h2>
       
-      <section className={`animate-on-scroll mb-8 rounded-xl p-6 shadow-2xl transition-all duration-700 overflow-hidden relative ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <section className={`animate-on-scroll mb-8 rounded-xl p-6 shadow-2xl transition-all duration-1000 overflow-hidden relative ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         <div className="absolute inset-0 bg-gradient-to-br from-[#222222] to-[#333333] opacity-95" />
         <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
         
@@ -107,10 +112,13 @@ const Dashboard: React.FC = () => {
             ].map((stat, index) => (
               <div 
                 key={stat.label}
-                className={`animate-on-scroll flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/10 transition-all duration-500 ${
+                className={`animate-on-scroll flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/10 transition-all duration-1000 ease-out ${
                   isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
                 }`}
-                style={{transitionDelay: `${200 * (index + 1)}ms`}}
+                style={{
+                  transitionDelay: `${200 * (index + 1)}ms`,
+                  willChange: 'transform, opacity'
+                }}
               >
                 <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mr-4">
                   <stat.icon className="w-6 h-6 text-white" />
@@ -136,7 +144,10 @@ const Dashboard: React.FC = () => {
             <div
               key={goal.id}
               className="animate-on-scroll"
-              style={{transitionDelay: `${100 * index}ms`}}
+              style={{
+                transitionDelay: `${150 * index}ms`,
+                willChange: 'transform, opacity'
+              }}
             >
               <GoalCard {...goal} />
             </div>
