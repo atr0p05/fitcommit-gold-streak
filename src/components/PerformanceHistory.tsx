@@ -4,9 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 import { LineChart, Line, XAxis, YAxis } from 'recharts';
-import { History } from "lucide-react";
+import { History, Dumbbell } from "lucide-react";
 import { healthService, HealthData } from "@/utils/healthService";
 import { useToast } from "@/components/ui/use-toast";
+import { format } from 'date-fns';
 
 const PerformanceHistory = () => {
   const { toast } = useToast();
@@ -48,38 +49,9 @@ const PerformanceHistory = () => {
     fetchHealthData();
   }, [toast]);
 
-  const handleConnectHealth = async () => {
-    try {
-      const success = await healthService.requestAuthorization();
-      if (success) {
-        toast({
-          title: "Connected to Apple Health",
-          description: "Your health data will now be synchronized",
-        });
-        
-        // Refresh data after connecting
-        const [steps, workouts, heartRate] = await Promise.all([
-          healthService.getStepData(),
-          healthService.getWorkoutData(),
-          healthService.getHeartRateData()
-        ]);
-        
-        setHealthData({ steps, workouts, heartRate });
-      } else {
-        toast({
-          title: "Connection Failed",
-          description: "Could not connect to Apple Health. Please try again.",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error('Health connection error:', error);
-      toast({
-        title: "Connection Error",
-        description: "An error occurred while connecting to Apple Health",
-        variant: "destructive",
-      });
-    }
+  const formatDateString = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return format(date, 'MMM d');
   };
 
   return (
@@ -109,60 +81,105 @@ const PerformanceHistory = () => {
             <TabsTrigger value="heartRate">Heart Rate</TabsTrigger>
           </TabsList>
           
-          {Object.entries(healthData).map(([key, data]) => (
-            <TabsContent key={key} value={key} className="space-y-4">
-              {loading ? (
-                <div className="h-[200px] flex items-center justify-center">
-                  <span className="text-sm text-muted-foreground">Loading data...</span>
-                </div>
-              ) : data.length > 0 ? (
-                <ChartContainer
-                  className="h-[200px]"
-                  config={{
-                    line: {
-                      color: "#6E59A5"
-                    }
-                  }}
-                >
-                  <LineChart data={data} margin={{ top: 5, right: 10, left: 10, bottom: 0 }}>
-                    <XAxis
-                      dataKey="date"
-                      stroke="#888888"
-                      fontSize={12}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <YAxis
-                      stroke="#888888"
-                      fontSize={12}
-                      tickLine={false}
-                      axisLine={false}
-                      tickFormatter={(value) => `${value}`}
-                    />
-                    <ChartTooltip />
-                    <Line
-                      type="monotone"
-                      dataKey="value"
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                  </LineChart>
-                </ChartContainer>
-              ) : (
-                <div className="h-[200px] flex flex-col items-center justify-center">
-                  <span className="text-sm text-muted-foreground mb-2">No data available</span>
-                  {!healthService.isHealthAuthorized() && (
-                    <button 
-                      onClick={handleConnectHealth}
-                      className="text-xs bg-fitGold hover:bg-fitGold/90 text-black px-3 py-1 rounded-sm font-medium transition-colors"
-                    >
-                      Connect Apple Health
-                    </button>
-                  )}
-                </div>
-              )}
-            </TabsContent>
-          ))}
+          <TabsContent value="steps">
+            {loading ? (
+              <div className="h-[200px] flex items-center justify-center">
+                <span className="text-sm text-muted-foreground">Loading data...</span>
+              </div>
+            ) : healthData.steps.length > 0 ? (
+              <ChartContainer className="h-[200px]">
+                <LineChart data={healthData.steps.map(data => ({
+                  ...data,
+                  date: formatDateString(data.date)
+                }))} margin={{ top: 5, right: 10, left: 10, bottom: 0 }}>
+                  <XAxis
+                    dataKey="date"
+                    stroke="#888888"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    stroke="#888888"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(value) => `${value}`}
+                  />
+                  <ChartTooltip />
+                  <Line type="monotone" dataKey="value" strokeWidth={2} dot={false} />
+                </LineChart>
+              </ChartContainer>
+            ) : (
+              <div className="h-[200px] flex flex-col items-center justify-center">
+                <span className="text-sm text-muted-foreground">No data available</span>
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="workouts">
+            {loading ? (
+              <div className="h-[200px] flex items-center justify-center">
+                <span className="text-sm text-muted-foreground">Loading data...</span>
+              </div>
+            ) : healthData.workouts.length > 0 ? (
+              <div className="space-y-4">
+                {healthData.workouts.map((workout, index) => (
+                  <div key={index} className="flex items-center justify-between p-4 bg-muted rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <Dumbbell className="h-5 w-5 text-fitGold" />
+                      <div>
+                        <p className="font-medium">{formatDateString(workout.date)}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {workout.value} {workout.value === 1 ? 'workout' : 'workouts'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="h-[200px] flex flex-col items-center justify-center">
+                <span className="text-sm text-muted-foreground">No workout data available</span>
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="heartRate">
+            {loading ? (
+              <div className="h-[200px] flex items-center justify-center">
+                <span className="text-sm text-muted-foreground">Loading data...</span>
+              </div>
+            ) : healthData.heartRate.length > 0 ? (
+              <ChartContainer className="h-[200px]">
+                <LineChart data={healthData.heartRate.map(data => ({
+                  ...data,
+                  date: formatDateString(data.date)
+                }))} margin={{ top: 5, right: 10, left: 10, bottom: 0 }}>
+                  <XAxis
+                    dataKey="date"
+                    stroke="#888888"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    stroke="#888888"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(value) => `${value}`}
+                  />
+                  <ChartTooltip />
+                  <Line type="monotone" dataKey="value" strokeWidth={2} dot={false} />
+                </LineChart>
+              </ChartContainer>
+            ) : (
+              <div className="h-[200px] flex flex-col items-center justify-center">
+                <span className="text-sm text-muted-foreground">No heart rate data available</span>
+              </div>
+            )}
+          </TabsContent>
         </Tabs>
       </CardContent>
     </Card>
