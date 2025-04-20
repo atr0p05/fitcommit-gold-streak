@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { cn } from "@/lib/utils";
 
 interface StatCircleProps {
@@ -21,10 +21,19 @@ const StatCircle: React.FC<StatCircleProps> = ({
   className,
   animate = false,
 }) => {
+  const [isVisible, setIsVisible] = useState(false);
   const percentage = (value / total) * 100;
   const radius = 40;
   const circumference = 2 * Math.PI * radius;
   const dash = (circumference * percentage) / 100;
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
   
   const sizeClasses = {
     sm: 'w-24 h-24 text-xl',
@@ -34,8 +43,8 @@ const StatCircle: React.FC<StatCircleProps> = ({
   
   return (
     <div className={cn(
-      "flex flex-col items-center justify-center transform transition-all duration-700 opacity-0 translate-y-4",
-      "animate-[enter_0.7s_ease-out_forwards]",
+      "flex flex-col items-center justify-center transition-all duration-700",
+      isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
       className
     )}>
       <div className={cn(
@@ -61,11 +70,10 @@ const StatCircle: React.FC<StatCircleProps> = ({
             stroke="currentColor"
             strokeWidth="4"
             strokeDasharray={circumference}
-            strokeDashoffset={circumference - dash}
+            strokeDashoffset={isVisible ? circumference - dash : circumference}
             className={cn(
               colorClass,
-              animate && "transition-all duration-1000 ease-out",
-              "animate-[stroke-progress_1.5s_ease-out_forwards]"
+              "transition-all duration-1500 ease-out"
             )}
           />
         </svg>
@@ -75,7 +83,11 @@ const StatCircle: React.FC<StatCircleProps> = ({
           "text-shadow-lg"
         )}>{value}</span>
       </div>
-      <span className="text-xs uppercase tracking-widest text-[#8E9196] mt-2 transform transition-all duration-500 opacity-0 translate-y-2 animate-[fade-up_0.5s_ease-out_0.3s_forwards]">
+      <span className={cn(
+        "text-xs uppercase tracking-widest text-[#8E9196] mt-2 transition-all duration-500",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2",
+        "delay-300"
+      )}>
         {label}
       </span>
     </div>
@@ -83,4 +95,3 @@ const StatCircle: React.FC<StatCircleProps> = ({
 };
 
 export default StatCircle;
-
