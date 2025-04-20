@@ -21,6 +21,7 @@ const PerformanceHistory = () => {
     workouts: [],
     heartRate: []
   });
+  const [isConnecting, setIsConnecting] = useState(false);
 
   useEffect(() => {
     const fetchHealthData = async () => {
@@ -54,6 +55,35 @@ const PerformanceHistory = () => {
     return format(date, 'MMM d');
   };
 
+  const handleConnectHealth = async () => {
+    try {
+      setIsConnecting(true);
+      const success = await healthService.requestAuthorization();
+      
+      if (success) {
+        toast({
+          title: "Connected to Health",
+          description: "Your health data will now be synchronized with FitCommit.",
+        });
+      } else {
+        toast({
+          title: "Connection Failed",
+          description: "Could not connect to Health. You can try again later in settings.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Error connecting to Health:', error);
+      toast({
+        title: "Connection Error",
+        description: "An error occurred while connecting to Health.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsConnecting(false);
+    }
+  };
+
   return (
     <Card className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -68,8 +98,9 @@ const PerformanceHistory = () => {
           <button 
             onClick={handleConnectHealth}
             className="text-xs bg-fitGold hover:bg-fitGold/90 text-black px-3 py-1 rounded-sm font-medium transition-colors"
+            disabled={isConnecting}
           >
-            Connect Health
+            {isConnecting ? 'Connecting...' : 'Connect Health'}
           </button>
         )}
       </CardHeader>
@@ -87,7 +118,10 @@ const PerformanceHistory = () => {
                 <span className="text-sm text-muted-foreground">Loading data...</span>
               </div>
             ) : healthData.steps.length > 0 ? (
-              <ChartContainer className="h-[200px]">
+              <ChartContainer 
+                config={{}} 
+                className="h-[200px]"
+              >
                 <LineChart data={healthData.steps.map(data => ({
                   ...data,
                   date: formatDateString(data.date)
@@ -151,7 +185,10 @@ const PerformanceHistory = () => {
                 <span className="text-sm text-muted-foreground">Loading data...</span>
               </div>
             ) : healthData.heartRate.length > 0 ? (
-              <ChartContainer className="h-[200px]">
+              <ChartContainer 
+                config={{}} 
+                className="h-[200px]"
+              >
                 <LineChart data={healthData.heartRate.map(data => ({
                   ...data,
                   date: formatDateString(data.date)
