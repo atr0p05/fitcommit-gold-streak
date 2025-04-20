@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import { Check } from "lucide-react";
+import GymLocationsManager from '@/components/settings/GymLocationsManager';
 
 const Settings = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -117,6 +118,11 @@ const Settings = () => {
               </div>
             </div>
           </div>
+        </section>
+        
+        <section className={`card-premium mb-premium transition-all duration-900 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+          <h3 className="text-lg uppercase tracking-wide mb-4">Gym Locations</h3>
+          <GymLocationsManager />
         </section>
         
         <div className={`text-center transition-all duration-600 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>

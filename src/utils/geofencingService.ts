@@ -1,4 +1,3 @@
-
 import { Capacitor } from '@capacitor/core';
 
 export interface GymLocation {
@@ -144,7 +143,6 @@ class GeofencingService {
   private simulateLocationTracking() {
     // Simulate location updates every 30 seconds
     this.locationWatchId = window.setInterval(() => {
-      // Randomly decide if user is at a gym
       const rand = Math.random();
       
       if (rand < 0.7) { // 70% chance of being at a gym
@@ -155,8 +153,12 @@ class GeofencingService {
           coords: {
             latitude: gym.latitude + (Math.random() * 0.0001 - 0.00005),
             longitude: gym.longitude + (Math.random() * 0.0001 - 0.00005),
-            accuracy: 10
-          },
+            accuracy: 10,
+            altitude: null,
+            altitudeAccuracy: null,
+            heading: null,
+            speed: null
+          } as GeolocationCoordinates,
           timestamp: Date.now()
         });
       } else {
@@ -165,8 +167,12 @@ class GeofencingService {
           coords: {
             latitude: 37.7 + (Math.random() * 0.1),
             longitude: -122.4 + (Math.random() * 0.1),
-            accuracy: 10
-          },
+            accuracy: 10,
+            altitude: null,
+            altitudeAccuracy: null,
+            heading: null,
+            speed: null
+          } as GeolocationCoordinates,
           timestamp: Date.now()
         });
       }
