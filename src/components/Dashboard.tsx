@@ -57,9 +57,9 @@ const Dashboard: React.FC = () => {
   
   return (
     <div className="p-4 pt-24 pb-24 max-w-md mx-auto">
-      <h2 className="font-display text-xl font-medium mb-6 text-center">Today's Performance</h2>
+      <h2 className="font-display text-xl font-medium mb-6 text-center tracking-tight">Today's Performance</h2>
       
-      <section className="mb-8 bg-fitCharcoal rounded-xl p-6 shadow-lg border border-white/5">
+      <section className="mb-8 bg-gradient-to-br from-[#1A1F2C] to-[#2C3444] rounded-xl p-6 shadow-2xl border border-white/5">
         <div className="flex flex-col space-y-6">
           <div className="flex justify-center mb-2">
             <StatCircle
@@ -67,39 +67,39 @@ const Dashboard: React.FC = () => {
               total={10000}
               label="Steps"
               size="lg"
-              colorClass="text-[#0EA5E9]"
+              colorClass="text-[#9b87f5]"
               animate
             />
           </div>
           
           <div className="grid grid-cols-1 gap-4">
-            <div className="flex items-center bg-black/20 p-4 rounded-lg">
-              <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/10 flex items-center justify-center mr-4">
-                <Heart className="w-6 h-6 text-[#0EA5E9]" />
+            <div className="flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/5">
+              <div className="w-12 h-12 rounded-full bg-[#9b87f5]/10 flex items-center justify-center mr-4">
+                <Heart className="w-6 h-6 text-[#9b87f5]" />
               </div>
               <div>
-                <p className="text-xs text-fitSilver font-medium uppercase tracking-wide">Avg. Heart Rate</p>
-                <p className="text-xl font-medium">{stats.heartRate} <span className="text-sm text-fitSilver">bpm</span></p>
+                <p className="text-xs text-[#8E9196] font-medium uppercase tracking-wide">Avg. Heart Rate</p>
+                <p className="text-xl font-medium text-white">{stats.heartRate} <span className="text-sm text-[#8E9196]">bpm</span></p>
               </div>
             </div>
             
-            <div className="flex items-center bg-black/20 p-4 rounded-lg">
-              <div className="w-12 h-12 rounded-full bg-[#F97316]/10 flex items-center justify-center mr-4">
-                <Calendar className="w-6 h-6 text-[#F97316]" />
+            <div className="flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/5">
+              <div className="w-12 h-12 rounded-full bg-[#7E69AB]/10 flex items-center justify-center mr-4">
+                <Calendar className="w-6 h-6 text-[#7E69AB]" />
               </div>
               <div>
-                <p className="text-xs text-fitSilver font-medium uppercase tracking-wide">Week Streak</p>
-                <p className="text-xl font-medium">14 <span className="text-sm text-fitSilver">days</span></p>
+                <p className="text-xs text-[#8E9196] font-medium uppercase tracking-wide">Week Streak</p>
+                <p className="text-xl font-medium text-white">14 <span className="text-sm text-[#8E9196]">days</span></p>
               </div>
             </div>
             
-            <div className="flex items-center bg-black/20 p-4 rounded-lg">
-              <div className="w-12 h-12 rounded-full bg-[#8B5CF6]/10 flex items-center justify-center mr-4">
-                <Star className="w-6 h-6 text-[#8B5CF6]" />
+            <div className="flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/5">
+              <div className="w-12 h-12 rounded-full bg-[#6E59A5]/10 flex items-center justify-center mr-4">
+                <Star className="w-6 h-6 text-[#6E59A5]" />
               </div>
               <div>
-                <p className="text-xs text-fitSilver font-medium uppercase tracking-wide">Calories Burned</p>
-                <p className="text-xl font-medium">{stats.calories} <span className="text-sm text-fitSilver">kcal</span></p>
+                <p className="text-xs text-[#8E9196] font-medium uppercase tracking-wide">Calories Burned</p>
+                <p className="text-xl font-medium text-white">{stats.calories} <span className="text-sm text-[#8E9196]">kcal</span></p>
               </div>
             </div>
           </div>
@@ -108,8 +108,8 @@ const Dashboard: React.FC = () => {
       
       <section className="mb-premium">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-medium">Active Goals</h2>
-          <span className="text-xs text-fitSilver uppercase tracking-wider">This Week</span>
+          <h2 className="text-xl font-medium tracking-tight">Active Goals</h2>
+          <span className="text-xs text-[#8E9196] uppercase tracking-wider">This Week</span>
         </div>
         
         <div className="space-y-4">
@@ -125,8 +125,8 @@ const Dashboard: React.FC = () => {
       />
       
       <div className="mt-8 text-center">
-        <p className="text-xs text-fitSilver uppercase tracking-widest mb-4">Financial Commitment</p>
-        <p className="text-sm">You've avoided <span className="text-fitGold">$12.87</span> in penalties this month</p>
+        <p className="text-xs text-[#8E9196] uppercase tracking-widest mb-4">Financial Commitment</p>
+        <p className="text-sm">You've avoided <span className="text-[#9b87f5]">$12.87</span> in penalties this month</p>
       </div>
     </div>
   );
