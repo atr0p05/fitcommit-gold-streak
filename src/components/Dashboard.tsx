@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import StatCircle from './StatCircle';
 import GoalCard from './GoalCard';
@@ -84,11 +83,11 @@ const Dashboard: React.FC = () => {
   
   return (
     <div className="p-4 pt-24 pb-24 max-w-md mx-auto">
-      <h2 className={`font-display text-xl font-medium mb-6 text-center tracking-tight transition-all duration-200 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+      <h2 className={`font-display text-xl font-medium mb-6 text-center tracking-tight transition-all duration-600 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
         Today's Performance
       </h2>
       
-      <section className={`mb-8 rounded-xl p-6 shadow-2xl overflow-hidden relative transition-all duration-300 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} style={{transformOrigin: 'center top'}}>
+      <section className={`mb-8 rounded-xl p-6 shadow-2xl overflow-hidden relative transition-all duration-900 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} style={{transformOrigin: 'center top'}}>
         <div className="absolute inset-0 bg-gradient-to-br from-[#222222] to-[#333333] opacity-95" />
         <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
         
@@ -112,11 +111,11 @@ const Dashboard: React.FC = () => {
             ].map((stat, index) => (
               <div 
                 key={stat.label}
-                className={`animate-on-scroll flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/10 transition-all duration-300 ease-out ${
+                className={`animate-on-scroll flex items-center bg-black/20 p-4 rounded-lg backdrop-blur-sm border border-white/10 transition-all duration-900 ease-out ${
                   isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
                 }`}
                 style={{
-                  transitionDelay: `${50 * (index + 1)}ms`,
+                  transitionDelay: `${150 * (index + 1)}ms`,
                   willChange: 'transform, opacity'
                 }}
               >
