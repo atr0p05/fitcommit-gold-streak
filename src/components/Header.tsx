@@ -4,6 +4,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import MobileNavigation from './MobileNavigation';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { navigationItems } from '@/config/navigation';
@@ -30,7 +31,9 @@ const Header: React.FC = () => {
                 </button>
               </SheetTrigger>
               <SheetContent side="left" className="w-[240px] p-0 bg-fitCharcoal">
-                <MobileNavigation onClose={() => setIsOpen(false)} />
+                <SidebarProvider defaultOpen={true}>
+                  <MobileNavigation onClose={() => setIsOpen(false)} />
+                </SidebarProvider>
               </SheetContent>
             </Sheet>
           )}

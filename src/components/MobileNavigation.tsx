@@ -20,27 +20,25 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({ onClose }) => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <SidebarProvider defaultOpen={true}>
-      <Sidebar>
-        <SidebarHeader className="p-4">
-          <h2 className="text-xl font-display tracking-widest">FITCOMMIT</h2>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarMenu>
-            {navigationItems.map((item) => (
-              <NavigationItem
-                key={item.path}
-                path={item.path}
-                label={item.label}
-                icon={item.icon}
-                isActive={isActive(item.path)}
-                onClose={onClose}
-              />
-            ))}
-          </SidebarMenu>
-        </SidebarContent>
-      </Sidebar>
-    </SidebarProvider>
+    <div className="w-full h-full">
+      <SidebarHeader className="p-4">
+        <h2 className="text-xl font-display tracking-widest">FITCOMMIT</h2>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarMenu>
+          {navigationItems.map((item) => (
+            <NavigationItem
+              key={item.path}
+              path={item.path}
+              label={item.label}
+              icon={item.icon}
+              isActive={isActive(item.path)}
+              onClose={onClose}
+            />
+          ))}
+        </SidebarMenu>
+      </SidebarContent>
+    </div>
   );
 };
 
