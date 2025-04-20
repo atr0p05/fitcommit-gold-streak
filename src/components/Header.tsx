@@ -1,10 +1,16 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
+import { Menu } from 'lucide-react';
 import { cn } from "@/lib/utils";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import MobileNavigation from './MobileNavigation';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Header: React.FC = () => {
   const location = useLocation();
+  const isMobile = useIsMobile();
+  const [isOpen, setIsOpen] = useState(false);
   
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -13,30 +19,45 @@ const Header: React.FC = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-lg border-b border-white/5">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center">
+        <div className="flex items-center gap-4">
+          {isMobile && (
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild>
+                <button className="text-fitSilver hover:text-fitWhite">
+                  <Menu size={24} />
+                  <span className="sr-only">Open menu</span>
+                </button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-[240px] p-0 bg-fitCharcoal">
+                <MobileNavigation open={isOpen} onClose={() => setIsOpen(false)} />
+              </SheetContent>
+            </Sheet>
+          )}
           <h1 className="text-fitWhite text-xl font-display tracking-widest">FITCOMMIT</h1>
         </div>
         
-        <nav className="flex space-x-8">
-          {[
-            { path: '/', label: 'Home' },
-            { path: '/goals', label: 'Goals' },
-            { path: '/friends', label: 'Friends' },
-            { path: '/achievements', label: 'Achievements' },
-            { path: '/settings', label: 'Settings' },
-          ].map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={cn(
-                "text-xs uppercase tracking-wider font-medium transition-colors font-display",
-                isActive(item.path) ? "text-fitWhite" : "text-fitSilver hover:text-white"
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        {!isMobile && (
+          <nav className="flex space-x-8">
+            {[
+              { path: '/', label: 'Home' },
+              { path: '/goals', label: 'Goals' },
+              { path: '/friends', label: 'Friends' },
+              { path: '/achievements', label: 'Achievements' },
+              { path: '/settings', label: 'Settings' },
+            ].map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={cn(
+                  "text-xs uppercase tracking-wider font-medium transition-colors font-display",
+                  isActive(item.path) ? "text-fitWhite" : "text-fitSilver hover:text-white"
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        )}
       </div>
     </header>
   );
