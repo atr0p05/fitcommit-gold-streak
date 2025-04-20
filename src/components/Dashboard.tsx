@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import StatCircle from './StatCircle';
 import GoalCard from './GoalCard';
@@ -18,22 +17,19 @@ const Dashboard: React.FC = () => {
         const isVisible = rect.top <= window.innerHeight * 0.85;
         
         if (isVisible) {
-          // Add staggered delay based on element index
           setTimeout(() => {
             el.classList.add('animate-in');
-          }, index * 150); // 150ms stagger between elements
+          }, index * 50);
         }
       });
     };
     
-    // Use passive scroll listener for better performance
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
+    setTimeout(handleScroll, 100);
     
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
-  // Mock data for demonstration
   const stats = {
     steps: 8734,
     heartRate: 72,
@@ -79,16 +75,15 @@ const Dashboard: React.FC = () => {
     }
   ];
   
-  // Mock data for streak (active for 5 of last 7 days)
   const streakDays = [true, true, false, true, true, false, true];
   
   return (
     <div className="p-4 pt-24 pb-24 max-w-md mx-auto">
-      <h2 className={`font-display text-xl font-medium mb-6 text-center tracking-tight transition-all duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+      <h2 className={`font-display text-xl font-medium mb-6 text-center tracking-tight transition-all duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
         Today's Performance
       </h2>
       
-      <section className={`animate-on-scroll mb-8 rounded-xl p-6 shadow-2xl transition-all duration-1000 overflow-hidden relative ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <section className={`mb-8 rounded-xl p-6 shadow-2xl transition-all duration-700 overflow-hidden relative ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         <div className="absolute inset-0 bg-gradient-to-br from-[#222222] to-[#333333] opacity-95" />
         <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
         
