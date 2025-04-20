@@ -1,17 +1,24 @@
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import { Check } from "lucide-react";
 
 const Settings = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoaded(true);
+    }, 10);
+  }, []);
+
   return (
     <div className="min-h-screen bg-fitTrue">
       <Header />
       
       <div className="p-4 pt-24 pb-24 max-w-md mx-auto">
-        <h2 className="text-xl font-medium mb-6">Settings</h2>
+        <h2 className={`text-xl font-medium mb-6 transition-all duration-600 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>Settings</h2>
         
-        <section className="card-premium mb-premium">
+        <section className={`card-premium mb-premium transition-all duration-900 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
           <h3 className="text-lg uppercase tracking-wide mb-4">Account</h3>
           
           <div className="space-y-4">
@@ -36,7 +43,7 @@ const Settings = () => {
           </div>
         </section>
         
-        <section className="card-premium mb-premium">
+        <section className={`card-premium mb-premium transition-all duration-900 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
           <h3 className="text-lg uppercase tracking-wide mb-4">Goals</h3>
           
           <div className="space-y-4">
@@ -72,7 +79,7 @@ const Settings = () => {
           <button className="btn-secondary w-full mt-6">Edit Goals</button>
         </section>
         
-        <section className="card-premium mb-premium">
+        <section className={`card-premium mb-premium transition-all duration-900 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
           <h3 className="text-lg uppercase tracking-wide mb-4">Notifications</h3>
           
           <div className="space-y-4">
@@ -112,7 +119,7 @@ const Settings = () => {
           </div>
         </section>
         
-        <div className="text-center">
+        <div className={`text-center transition-all duration-600 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
           <button className="text-fitError text-sm">Log Out</button>
         </div>
       </div>

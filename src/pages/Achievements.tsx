@@ -1,10 +1,16 @@
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import AchievementBadge from '@/components/AchievementBadge';
 
 const Achievements = () => {
-  // Mock data for demonstration
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoaded(true);
+    }, 10);
+  }, []);
+
   const unlockedAchievements = [
     {
       id: 1,
@@ -61,36 +67,52 @@ const Achievements = () => {
       <Header />
       
       <div className="p-4 pt-24 pb-24 max-w-md mx-auto">
-        <section className="mb-premium">
+        <section className={`mb-premium transition-all duration-900 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-medium">Unlocked Achievements</h2>
-            <div className="flex items-center">
+            <h2 className={`text-xl font-medium transition-all duration-600 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>Unlocked Achievements</h2>
+            <div className={`flex items-center transition-all duration-600 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
               <div className="w-4 h-4 rounded-full bg-fitGold mr-1"></div>
               <span className="text-xs text-fitSilver uppercase tracking-wider">3 / 9</span>
             </div>
           </div>
           
           <div className="space-y-4">
-            {unlockedAchievements.map(achievement => (
-              <AchievementBadge key={achievement.id} {...achievement} />
+            {unlockedAchievements.map((achievement, index) => (
+              <div
+                key={achievement.id}
+                className={`transition-all duration-50 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
+                style={{
+                  transitionDelay: `${50 * (index + 1)}ms`,
+                }}
+              >
+                <AchievementBadge {...achievement} />
+              </div>
             ))}
           </div>
         </section>
         
-        <section>
+        <section className={`transition-all duration-900 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-medium">Locked Achievements</h2>
-            <span className="text-xs text-fitSilver uppercase tracking-wider">In Progress</span>
+            <h2 className={`text-xl font-medium transition-all duration-600 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>Locked Achievements</h2>
+            <span className={`text-xs text-fitSilver uppercase tracking-wider transition-all duration-600 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>In Progress</span>
           </div>
           
           <div className="space-y-4">
-            {lockedAchievements.map(achievement => (
-              <AchievementBadge key={achievement.id} {...achievement} />
+            {lockedAchievements.map((achievement, index) => (
+              <div
+                key={achievement.id}
+                className={`transition-all duration-50 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
+                style={{
+                  transitionDelay: `${50 * (index + 1)}ms`,
+                }}
+              >
+                <AchievementBadge {...achievement} />
+              </div>
             ))}
           </div>
         </section>
         
-        <div className="mt-8 text-center">
+        <div className={`mt-8 text-center transition-all duration-900 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
           <p className="text-xs text-fitSilver uppercase tracking-widest mb-2">Achievement Rewards</p>
           <p className="text-sm">Unlock all gold achievements to earn a free week of no penalties</p>
         </div>

@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
@@ -13,12 +14,19 @@ const friends = [
 
 const Friends = () => {
   const isMobile = useIsMobile();
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoaded(true);
+    }, 10);
+  }, []);
 
   return (
     <div className="min-h-screen bg-fitTrue">
       <Header />
       <main className="container mx-auto px-4 pt-24 pb-24">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 transition-all duration-600 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
           <div>
             <h2 className="text-xl sm:text-2xl font-display mb-2">Connected Friends</h2>
             <p className="text-sm text-fitSilver">Stay motivated with your fitness community</p>
@@ -29,7 +37,7 @@ const Friends = () => {
           </button>
         </div>
 
-        <div className="grid gap-6">
+        <div className={`grid gap-6 transition-all duration-900 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
           <Card className="bg-fitCharcoal border-white/5 overflow-hidden">
             <CardHeader>
               <CardTitle className="text-lg font-display flex items-center">
@@ -53,7 +61,13 @@ const Friends = () => {
                     {friends
                       .sort((a, b) => b.steps - a.steps)
                       .map((friend, index) => (
-                        <TableRow key={friend.id}>
+                        <TableRow 
+                          key={friend.id}
+                          className={`transition-all duration-50 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
+                          style={{
+                            transitionDelay: `${50 * (index + 1)}ms`,
+                          }}
+                        >
                           <TableCell className="font-medium">{index + 1}</TableCell>
                           <TableCell>{friend.name}</TableCell>
                           <TableCell className="text-right">{friend.steps.toLocaleString()}</TableCell>
