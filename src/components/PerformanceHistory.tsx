@@ -1,12 +1,12 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 import { LineChart, Line, XAxis, YAxis } from 'recharts';
-import { History, Dumbbell } from "lucide-react";
+import { History, CalendarCheck } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
 import { healthService, HealthData } from "@/utils/healthService";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { format } from 'date-fns';
 
 const PerformanceHistory = () => {
@@ -84,6 +84,10 @@ const PerformanceHistory = () => {
     }
   };
 
+  const workoutDates = healthData.workouts.map(workout => 
+    new Date(workout.date)
+  );
+
   return (
     <Card className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -157,20 +161,28 @@ const PerformanceHistory = () => {
                 <span className="text-sm text-muted-foreground">Loading data...</span>
               </div>
             ) : healthData.workouts.length > 0 ? (
-              <div className="space-y-4">
-                {healthData.workouts.map((workout, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 bg-muted rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Dumbbell className="h-5 w-5 text-fitGold" />
-                      <div>
-                        <p className="font-medium">{formatDateString(workout.date)}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {workout.value} {workout.value === 1 ? 'workout' : 'workouts'}
-                        </p>
-                      </div>
+              <div className="flex flex-col items-center space-y-4">
+                <Calendar
+                  mode="single"
+                  className="rounded-md border pointer-events-auto"
+                  modifiers={{
+                    workout: workoutDates
+                  }}
+                  modifiersStyles={{
+                    workout: {
+                      backgroundColor: 'var(--fitGold)',
+                      color: 'black',
+                      fontWeight: '500'
+                    }
+                  }}
+                  disabled
+                  footer={
+                    <div className="mt-3 flex items-center justify-center gap-2 text-sm">
+                      <CalendarCheck className="h-4 w-4 text-fitGold" />
+                      <span>{healthData.workouts.length} workouts this month</span>
                     </div>
-                  </div>
-                ))}
+                  }
+                />
               </div>
             ) : (
               <div className="h-[200px] flex flex-col items-center justify-center">
