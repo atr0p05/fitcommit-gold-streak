@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import MobileNavigation from './MobileNavigation';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { navigationItems } from '@/config/navigation';
 
 const Header: React.FC = () => {
   const location = useLocation();
@@ -23,13 +24,13 @@ const Header: React.FC = () => {
           {isMobile && (
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <button className="text-fitSilver hover:text-fitWhite">
+                <button className="text-fitSilver hover:text-fitWhite p-2">
                   <Menu size={24} />
                   <span className="sr-only">Open menu</span>
                 </button>
               </SheetTrigger>
               <SheetContent side="left" className="w-[240px] p-0 bg-fitCharcoal">
-                <MobileNavigation open={isOpen} onClose={() => setIsOpen(false)} />
+                <MobileNavigation onClose={() => setIsOpen(false)} />
               </SheetContent>
             </Sheet>
           )}
@@ -38,13 +39,7 @@ const Header: React.FC = () => {
         
         {!isMobile && (
           <nav className="flex space-x-8">
-            {[
-              { path: '/', label: 'Home' },
-              { path: '/goals', label: 'Goals' },
-              { path: '/friends', label: 'Friends' },
-              { path: '/achievements', label: 'Achievements' },
-              { path: '/settings', label: 'Settings' },
-            ].map((item) => (
+            {navigationItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}

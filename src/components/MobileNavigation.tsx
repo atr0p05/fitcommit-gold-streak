@@ -11,7 +11,6 @@ import NavigationItem from './mobile/NavigationItem';
 import { navigationItems } from '@/config/navigation';
 
 interface MobileNavigationProps {
-  open: boolean;
   onClose: () => void;
 }
 
