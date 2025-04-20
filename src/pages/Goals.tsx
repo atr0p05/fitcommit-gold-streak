@@ -1,7 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import GoalCard from '@/components/GoalCard';
+import PerformanceHistory from '@/components/PerformanceHistory';
 
 const Goals = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -68,6 +68,10 @@ const Goals = () => {
       <Header />
       
       <div className="p-4 pt-24 pb-24 max-w-md mx-auto">
+        <section className={`mb-6 transition-all duration-900 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+          <PerformanceHistory />
+        </section>
+
         <section className={`mb-premium transition-all duration-900 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
           <div className="flex justify-between items-center mb-6">
             <h2 className={`text-xl font-medium transition-all duration-600 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>Daily Goals</h2>
