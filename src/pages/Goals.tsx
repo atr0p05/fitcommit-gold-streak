@@ -2,14 +2,24 @@ import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import GoalCard from '@/components/GoalCard';
 import PerformanceHistory from '@/components/PerformanceHistory';
+import { geofencingService } from '@/utils/geofencingService';
 
 const Goals = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [weeklyGymVisits, setWeeklyGymVisits] = useState(0);
   
   useEffect(() => {
     setTimeout(() => {
       setIsLoaded(true);
     }, 10);
+
+    setWeeklyGymVisits(geofencingService.getWeeklyWorkoutCount());
+
+    const interval = setInterval(() => {
+      setWeeklyGymVisits(geofencingService.getWeeklyWorkoutCount());
+    }, 60000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const dailyGoals = [
@@ -47,10 +57,10 @@ const Goals = () => {
       id: 4,
       title: "Gym Check-ins",
       description: "Visit your home gym location",
-      currentValue: 3,
+      currentValue: weeklyGymVisits,
       targetValue: 3,
       unit: "visits",
-      isComplete: true
+      isComplete: weeklyGymVisits >= 3
     },
     {
       id: 5,

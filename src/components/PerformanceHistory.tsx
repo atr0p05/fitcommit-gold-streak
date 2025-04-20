@@ -2,38 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
-import { LineChart, Line, XAxis, YAxis } from 'recharts';
-import { History, CalendarCheck } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
+import { History } from "lucide-react";
 import { healthService, HealthData } from "@/utils/healthService";
+import { geofencingService } from "@/utils/geofencingService";
 import { useToast } from "@/hooks/use-toast";
-import { format } from 'date-fns';
-
-// Define CSS styles for the calendar
-const calendarWorkoutDayStyle = `
-  .workout-day {
-    position: relative;
-  }
-  .workout-day button {
-    color: black !important;
-    font-weight: 600 !important;
-    z-index: 2;
-    position: relative;
-  }
-  .workout-day::before {
-    content: '';
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background-color: white;
-    border-radius: 100%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-  }
-`;
+import PerformanceStepsChart from "./performance/PerformanceStepsChart";
+import PerformanceHeartRateChart from "./performance/PerformanceHeartRateChart";
+import WorkoutCalendar from "./performance/WorkoutCalendar";
 
 const PerformanceHistory = () => {
   const { toast } = useToast();
@@ -48,6 +23,7 @@ const PerformanceHistory = () => {
     heartRate: []
   });
   const [isConnecting, setIsConnecting] = useState(false);
+  const [isTrackingLocation, setIsTrackingLocation] = useState(false);
 
   useEffect(() => {
     const fetchHealthData = async () => {
@@ -75,11 +51,6 @@ const PerformanceHistory = () => {
 
     fetchHealthData();
   }, [toast]);
-
-  const formatDateString = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return format(date, 'MMM d');
-  };
 
   const handleConnectHealth = async () => {
     try {
@@ -110,14 +81,34 @@ const PerformanceHistory = () => {
     }
   };
 
+  const toggleLocationTracking = () => {
+    if (isTrackingLocation) {
+      geofencingService.stopTracking();
+      setIsTrackingLocation(false);
+      toast({
+        title: "Location Tracking Stopped",
+        description: "Gym visit tracking has been disabled.",
+      });
+    } else {
+      const success = geofencingService.startTracking();
+      if (success) {
+        setIsTrackingLocation(true);
+        toast({
+          title: "Location Tracking Active",
+          description: "FitCommit will now track your gym visits automatically.",
+        });
+      } else {
+        toast({
+          title: "Location Tracking Failed",
+          description: "Could not enable gym visit tracking. This feature requires a native device.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
   // Convert workout data dates to Date objects
-  // Make sure we're properly parsing string dates into Date objects
-  const workoutDates = healthData.workouts.map(workout => {
-    // Ensure we have proper Date objects
-    const workoutDate = new Date(workout.date);
-    console.log('Workout date:', workoutDate);
-    return workoutDate;
-  });
+  const workoutDates = [...healthData.workouts.map(workout => new Date(workout.date)), ...geofencingService.getWorkoutDates()];
 
   return (
     <Card className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -129,15 +120,27 @@ const PerformanceHistory = () => {
           </div>
         </CardTitle>
         
-        {!healthService.isHealthAuthorized() && (
-          <button 
-            onClick={handleConnectHealth}
-            className="text-xs bg-fitGold hover:bg-fitGold/90 text-black px-3 py-1 rounded-sm font-medium transition-colors"
-            disabled={isConnecting}
+        <div className="flex space-x-2">
+          {!healthService.isHealthAuthorized() && (
+            <button 
+              onClick={handleConnectHealth}
+              className="text-xs bg-fitGold hover:bg-fitGold/90 text-black px-3 py-1 rounded-sm font-medium transition-colors"
+              disabled={isConnecting}
+            >
+              {isConnecting ? 'Connecting...' : 'Connect Health'}
+            </button>
+          )}
+          <button
+            onClick={toggleLocationTracking}
+            className={`text-xs ${
+              isTrackingLocation 
+                ? "bg-fitError/70 hover:bg-fitError/90" 
+                : "bg-fitGold hover:bg-fitGold/90"
+            } text-black px-3 py-1 rounded-sm font-medium transition-colors`}
           >
-            {isConnecting ? 'Connecting...' : 'Connect Health'}
+            {isTrackingLocation ? 'Stop Tracking' : 'Track Gym Visits'}
           </button>
-        )}
+        </div>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="steps" className="space-y-4">
@@ -148,116 +151,36 @@ const PerformanceHistory = () => {
           </TabsList>
           
           <TabsContent value="steps">
-            {loading ? (
-              <div className="h-[200px] flex items-center justify-center">
-                <span className="text-sm text-muted-foreground">Loading data...</span>
-              </div>
-            ) : healthData.steps.length > 0 ? (
-              <ChartContainer 
-                config={{}} 
-                className="h-[200px]"
-              >
-                <LineChart data={healthData.steps.map(data => ({
-                  ...data,
-                  date: formatDateString(data.date)
-                }))} margin={{ top: 5, right: 10, left: 10, bottom: 0 }}>
-                  <XAxis
-                    dataKey="date"
-                    stroke="#888888"
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={false}
-                  />
-                  <YAxis
-                    stroke="#888888"
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={false}
-                    tickFormatter={(value) => `${value}`}
-                  />
-                  <ChartTooltip />
-                  <Line type="monotone" dataKey="value" strokeWidth={2} dot={false} />
-                </LineChart>
-              </ChartContainer>
-            ) : (
-              <div className="h-[200px] flex flex-col items-center justify-center">
-                <span className="text-sm text-muted-foreground">No data available</span>
-              </div>
-            )}
+            <PerformanceStepsChart 
+              stepsData={healthData.steps} 
+              loading={loading} 
+            />
           </TabsContent>
 
           <TabsContent value="workouts">
-            {loading ? (
-              <div className="h-[200px] flex items-center justify-center">
-                <span className="text-sm text-muted-foreground">Loading data...</span>
-              </div>
-            ) : healthData.workouts.length > 0 ? (
-              <div className="flex flex-col items-center space-y-4">
-                {/* Add the CSS styles in a standard style tag */}
-                <style dangerouslySetInnerHTML={{ __html: calendarWorkoutDayStyle }} />
-                
-                <Calendar
-                  mode="single"
-                  className="rounded-md border pointer-events-auto"
-                  modifiersClassNames={{
-                    workout: "workout-day"
-                  }}
-                  modifiers={{
-                    workout: workoutDates
-                  }}
-                  disabled
-                  footer={
-                    <div className="mt-3 flex items-center justify-center gap-2 text-sm">
-                      <CalendarCheck className="h-4 w-4 text-white" />
-                      <span>{healthData.workouts.length} workouts this month</span>
-                    </div>
-                  }
-                />
-              </div>
-            ) : (
-              <div className="h-[200px] flex flex-col items-center justify-center">
-                <span className="text-sm text-muted-foreground">No workout data available</span>
-              </div>
-            )}
+            <div className="mb-3 text-sm text-center">
+              {!loading && (
+                <div className="flex justify-center items-center space-x-2 mb-2">
+                  <div className="bg-fitGold px-2 py-1 rounded text-black font-medium">
+                    {geofencingService.getWeeklyWorkoutCount()}/3 gym visits this week
+                  </div>
+                </div>
+              )}
+              <p className="text-xs text-fitSilver">
+                Visit a gym for at least 30 minutes, 3 times per week to meet your goal
+              </p>
+            </div>
+            <WorkoutCalendar 
+              workoutDates={workoutDates} 
+              loading={loading} 
+            />
           </TabsContent>
 
           <TabsContent value="heartRate">
-            {loading ? (
-              <div className="h-[200px] flex items-center justify-center">
-                <span className="text-sm text-muted-foreground">Loading data...</span>
-              </div>
-            ) : healthData.heartRate.length > 0 ? (
-              <ChartContainer 
-                config={{}} 
-                className="h-[200px]"
-              >
-                <LineChart data={healthData.heartRate.map(data => ({
-                  ...data,
-                  date: formatDateString(data.date)
-                }))} margin={{ top: 5, right: 10, left: 10, bottom: 0 }}>
-                  <XAxis
-                    dataKey="date"
-                    stroke="#888888"
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={false}
-                  />
-                  <YAxis
-                    stroke="#888888"
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={false}
-                    tickFormatter={(value) => `${value}`}
-                  />
-                  <ChartTooltip />
-                  <Line type="monotone" dataKey="value" strokeWidth={2} dot={false} />
-                </LineChart>
-              </ChartContainer>
-            ) : (
-              <div className="h-[200px] flex flex-col items-center justify-center">
-                <span className="text-sm text-muted-foreground">No heart rate data available</span>
-              </div>
-            )}
+            <PerformanceHeartRateChart 
+              heartRateData={healthData.heartRate} 
+              loading={loading} 
+            />
           </TabsContent>
         </Tabs>
       </CardContent>
