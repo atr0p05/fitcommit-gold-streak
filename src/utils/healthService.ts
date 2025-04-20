@@ -1,6 +1,6 @@
 
 import { Capacitor } from '@capacitor/core';
-import { Toast } from '@/components/ui/use-toast';
+import { toast } from "@/components/ui/use-toast";
 
 // Define interfaces for our health data
 export interface HealthData {
