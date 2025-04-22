@@ -1,6 +1,16 @@
+
 import { Capacitor } from '@capacitor/core';
 import { Geolocation, Position } from '@capacitor/geolocation';
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "@/hooks/use-toast";
+import { v4 as uuidv4 } from 'uuid';
+
+export interface GymLocation {
+  id: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+  radius: number;
+}
 
 class GeofencingService {
   private createGeolocationPosition(coords: GeolocationCoordinates): GeolocationPosition {
@@ -22,7 +32,7 @@ class GeofencingService {
     };
   }
 
-  private workoutLocations: { lat: number, lng: number, name: string }[] = [];
+  private workoutLocations: GymLocation[] = [];
   private workoutDates: Date[] = [];
   private currentWorkout: { startTime?: number, location?: { lat: number, lng: number } } = {};
 
@@ -43,15 +53,15 @@ class GeofencingService {
     const distance = this.calculateDistance(
       pos.coords.latitude,
       pos.coords.longitude,
-      gymLocation.lat,
-      gymLocation.lng
+      gymLocation.latitude,
+      gymLocation.longitude
     );
 
     const isInsideGeofence = distance < 100; // 100 meters
 
     if (isInsideGeofence && !this.currentWorkout.startTime) {
       // Start workout
-      this.startWorkout(gymLocation.lat, gymLocation.lng);
+      this.startWorkout(gymLocation.latitude, gymLocation.longitude);
       toast({
         title: "Workout Started",
         description: `You've arrived at ${gymLocation.name}. Tracking your workout.`,
@@ -178,6 +188,23 @@ class GeofencingService {
       }
     }
     return count;
+  }
+
+  // Add gym location management methods
+  public getGymLocations(): GymLocation[] {
+    return [...this.workoutLocations];
+  }
+
+  public addGymLocation(location: Omit<GymLocation, 'id'>): GymLocation {
+    const newLocation = { ...location, id: uuidv4() };
+    this.workoutLocations.push(newLocation);
+    return newLocation;
+  }
+
+  public removeGymLocation(id: string): boolean {
+    const initialLength = this.workoutLocations.length;
+    this.workoutLocations = this.workoutLocations.filter(loc => loc.id !== id);
+    return initialLength > this.workoutLocations.length;
   }
 }
 
