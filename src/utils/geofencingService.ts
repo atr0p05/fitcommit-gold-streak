@@ -13,9 +13,28 @@ export interface GymLocation {
 }
 
 class GeofencingService {
-  private createGeolocationPosition(coords: GeolocationCoordinates): GeolocationPosition {
+  private createGeolocationPosition(coords: Position['coords']): GeolocationPosition {
     return {
-      coords,
+      coords: {
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+        accuracy: coords.accuracy,
+        altitude: coords.altitude,
+        altitudeAccuracy: coords.altitudeAccuracy,
+        heading: coords.heading,
+        speed: coords.speed,
+        toJSON: function() {
+          return {
+            latitude: this.latitude,
+            longitude: this.longitude,
+            accuracy: this.accuracy,
+            altitude: this.altitude,
+            altitudeAccuracy: this.altitudeAccuracy,
+            heading: this.heading,
+            speed: this.speed
+          };
+        }
+      },
       timestamp: Date.now(),
       toJSON: () => ({
         coords: {
