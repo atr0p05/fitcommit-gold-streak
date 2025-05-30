@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Trophy, Users, UserPlus, Medal, Crown, Award } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -17,7 +17,8 @@ const Friends = () => {
   const [friends, setFriends] = useState<Friend[]>([]);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [trainers, setTrainers] = useState<Friend[]>([]);
-  const [newFriendEmail, setNewFriendEmail] = useState('');
+  const [newFriendInput, setNewFriendInput] = useState('');
+  const [searchType, setSearchType] = useState<'email' | 'phone' | 'username'>('email');
   const [isAddingFriend, setIsAddingFriend] = useState(false);
   const [activeTab, setActiveTab] = useState<'leaderboard' | 'friends' | 'trainers'>('leaderboard');
   
@@ -45,18 +46,18 @@ const Friends = () => {
   };
 
   const handleAddFriend = async () => {
-    if (!newFriendEmail.trim()) return;
+    if (!newFriendInput.trim()) return;
 
     setIsAddingFriend(true);
     try {
-      const result = await friendsService.addFriend(newFriendEmail);
+      const result = await friendsService.addFriendByContact(newFriendInput, searchType);
       
       if (result.success) {
         toast({
           title: "Friend Request Sent",
           description: result.message,
         });
-        setNewFriendEmail('');
+        setNewFriendInput('');
       } else {
         toast({
           title: "Unable to Add Friend",
@@ -110,6 +111,19 @@ const Friends = () => {
         return <Award className="w-5 h-5 text-amber-600" />;
       default:
         return <span className="w-5 h-5 flex items-center justify-center text-sm font-bold">{rank}</span>;
+    }
+  };
+
+  const getPlaceholderText = () => {
+    switch (searchType) {
+      case 'email':
+        return 'Enter friend\'s email';
+      case 'phone':
+        return 'Enter friend\'s phone number';
+      case 'username':
+        return 'Enter friend\'s username';
+      default:
+        return 'Enter contact information';
     }
   };
 
@@ -208,20 +222,32 @@ const Friends = () => {
                   <CardTitle className="text-white">Add New Friend</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex gap-3">
-                    <Input
-                      placeholder="Enter friend's email"
-                      value={newFriendEmail}
-                      onChange={(e) => setNewFriendEmail(e.target.value)}
-                      className="bg-white/10 border-gray-600 text-white placeholder-gray-400"
-                    />
-                    <Button 
-                      onClick={handleAddFriend}
-                      disabled={isAddingFriend || !newFriendEmail.trim()}
-                      className="bg-white text-black hover:bg-gray-200"
-                    >
-                      {isAddingFriend ? 'Sending...' : 'Add Friend'}
-                    </Button>
+                  <div className="space-y-3">
+                    <Select value={searchType} onValueChange={(value: 'email' | 'phone' | 'username') => setSearchType(value)}>
+                      <SelectTrigger className="bg-white/10 border-gray-600 text-white">
+                        <SelectValue placeholder="Search by..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="email">Email</SelectItem>
+                        <SelectItem value="phone">Phone Number</SelectItem>
+                        <SelectItem value="username">Username</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <div className="flex gap-3">
+                      <Input
+                        placeholder={getPlaceholderText()}
+                        value={newFriendInput}
+                        onChange={(e) => setNewFriendInput(e.target.value)}
+                        className="bg-white/10 border-gray-600 text-white placeholder-gray-400"
+                      />
+                      <Button 
+                        onClick={handleAddFriend}
+                        disabled={isAddingFriend || !newFriendInput.trim()}
+                        className="bg-white text-black hover:bg-gray-200"
+                      >
+                        {isAddingFriend ? 'Sending...' : 'Add Friend'}
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>

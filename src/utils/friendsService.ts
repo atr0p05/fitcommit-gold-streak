@@ -1,4 +1,3 @@
-
 export interface Friend {
   id: string;
   name: string;
@@ -97,6 +96,49 @@ class FriendsService {
           resolve({ success: false, message: "User is already in your friends list" });
         } else {
           resolve({ success: true, message: "Friend request sent successfully" });
+        }
+      }, 1000);
+    });
+  }
+
+  async addFriendByContact(contact: string, type: 'email' | 'phone' | 'username'): Promise<{ success: boolean; message: string }> {
+    // Simulate API call
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        // Mock validation based on contact type
+        let isValid = false;
+        let searchField = '';
+        
+        switch (type) {
+          case 'email':
+            isValid = contact.includes('@') && contact.includes('.');
+            searchField = 'email';
+            break;
+          case 'phone':
+            isValid = /^\+?[\d\s\-\(\)]+$/.test(contact) && contact.replace(/\D/g, '').length >= 10;
+            searchField = 'phone number';
+            break;
+          case 'username':
+            isValid = contact.length >= 3 && /^[a-zA-Z0-9_]+$/.test(contact);
+            searchField = 'username';
+            break;
+        }
+
+        if (!isValid) {
+          resolve({ success: false, message: `Please enter a valid ${searchField}` });
+          return;
+        }
+
+        // Check if already friends (simplified check for demo)
+        const existingFriend = this.mockFriends.find(f => 
+          f.email.toLowerCase().includes(contact.toLowerCase()) || 
+          f.name.toLowerCase().replace(/\s+/g, '').includes(contact.toLowerCase())
+        );
+        
+        if (existingFriend) {
+          resolve({ success: false, message: "User is already in your friends list" });
+        } else {
+          resolve({ success: true, message: `Friend request sent to ${contact}` });
         }
       }, 1000);
     });
