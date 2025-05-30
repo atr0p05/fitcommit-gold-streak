@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import { StatCard } from "@/components/ui/stat-card";
 import { TrendingUp, Calendar, Award, Target } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import PerformanceHistory from "@/components/PerformanceHistory";
 
 export default function Progress() {
   const progressStats = [
@@ -66,6 +67,11 @@ export default function Progress() {
           {progressStats.map((stat) => (
             <StatCard key={stat.title} {...stat} />
           ))}
+        </div>
+
+        {/* Performance History with Heart Rate Monitor */}
+        <div className="mb-12">
+          <PerformanceHistory />
         </div>
 
         {/* Weekly Overview */}
