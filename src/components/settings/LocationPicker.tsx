@@ -137,15 +137,15 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, onClo
       </div>
 
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-fitSilver w-4 h-4" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
         <Input
           placeholder="Search for your gym by name (e.g., 'Planet Fitness', 'Gold's Gym')"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10 bg-fitCharcoal border-white/10 text-white placeholder:text-fitSilver"
+          className="pl-10 bg-white border-gray-300 text-black placeholder:text-gray-500"
         />
         {isSearching && (
-          <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 animate-spin text-fitSilver" />
+          <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 animate-spin text-gray-400" />
         )}
       </div>
 
