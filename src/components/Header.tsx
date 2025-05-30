@@ -37,13 +37,13 @@ const Header: React.FC = () => {
               </SheetContent>
             </Sheet>
           )}
-          <h1 className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent text-xl font-display font-semibold tracking-[0.2em] drop-shadow-sm">
+          <h1 className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent text-lg sm:text-xl font-display font-semibold tracking-wider">
             FITCOMMIT
           </h1>
         </div>
         
         {!isMobile && (
-          <nav className="flex space-x-8">
+          <nav className="flex space-x-6">
             {navigationItems.map((item) => (
               <Link
                 key={item.path}
