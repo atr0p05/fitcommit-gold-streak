@@ -75,6 +75,18 @@ export default function Index() {
       <Navigation />
       
       <main className="pt-16">
+        {/* Welcome Section */}
+        <section className="container mx-auto px-4 py-8">
+          <div className={`transition-all duration-1000 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}>
+            <div className="luxury-card rounded-2xl p-8 mb-8 text-center">
+              <h2 className="text-2xl font-bold text-white mb-2">Welcome back!</h2>
+              <p className="text-gray-300">Ready to crush your fitness goals today?</p>
+            </div>
+          </div>
+        </section>
+
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-12">
           <div className={`max-w-4xl mx-auto text-center transition-all duration-1000 ${
@@ -85,7 +97,7 @@ export default function Index() {
               <br />
               <span className="text-white">Accountability</span>
             </h1>
-            <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
               Transform your commitment into results. Every goal matters, every day counts, 
               every achievement is earned through dedication.
             </p>
@@ -149,31 +161,31 @@ export default function Index() {
         <section className="container mx-auto px-4 py-12">
           <div className="luxury-card rounded-2xl p-8 max-w-4xl mx-auto text-center">
             <div className="flex items-center justify-center mb-6">
-              <div className="p-4 rounded-full bg-luxury-gold/20">
-                <Heart className="w-8 h-8 text-luxury-gold" />
+              <div className="p-4 rounded-full bg-white/20">
+                <Heart className="w-8 h-8 text-white" />
               </div>
             </div>
             <h3 className="text-2xl font-bold text-white mb-4">Your Commitment</h3>
-            <p className="text-white/80 mb-6 max-w-2xl mx-auto">
-              You've saved <span className="text-luxury-gold font-semibold">$47.93</span> this month 
+            <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+              You've saved <span className="text-white font-semibold">$47.93</span> this month 
               by staying committed to your goals. Your dedication is paying off.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
               <div>
-                <div className="text-2xl font-bold text-luxury-gold">14</div>
-                <div className="text-sm text-white/60">Day Streak</div>
+                <div className="text-2xl font-bold text-white">14</div>
+                <div className="text-sm text-gray-400">Day Streak</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-luxury-gold">$47.93</div>
-                <div className="text-sm text-white/60">Saved</div>
+                <div className="text-2xl font-bold text-white">$47.93</div>
+                <div className="text-sm text-gray-400">Saved</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-luxury-gold">89%</div>
-                <div className="text-sm text-white/60">Success Rate</div>
+                <div className="text-2xl font-bold text-white">89%</div>
+                <div className="text-sm text-gray-400">Success Rate</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-luxury-gold">42</div>
-                <div className="text-sm text-white/60">Goals Met</div>
+                <div className="text-2xl font-bold text-white">42</div>
+                <div className="text-sm text-gray-400">Goals Met</div>
               </div>
             </div>
           </div>

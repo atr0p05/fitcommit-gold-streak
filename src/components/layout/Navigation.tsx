@@ -17,13 +17,13 @@ export function Navigation() {
   const location = useLocation();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-luxury-obsidian/80 backdrop-blur-xl border-b border-white/10">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-gray-800">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-luxury-gold to-luxury-platinum rounded-full flex items-center justify-center">
-              <Target className="w-4 h-4 text-luxury-obsidian" />
+            <div className="w-8 h-8 bg-gradient-to-r from-white to-gray-300 rounded-full flex items-center justify-center">
+              <Target className="w-4 h-4 text-black" />
             </div>
             <span className="font-display text-xl font-bold text-gradient">
               FitCommit
@@ -43,8 +43,8 @@ export function Navigation() {
                   className={cn(
                     "flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300",
                     isActive
-                      ? "bg-luxury-gold/20 text-luxury-gold"
-                      : "text-white/70 hover:text-luxury-gold hover:bg-white/5"
+                      ? "bg-white/20 text-white"
+                      : "text-gray-300 hover:text-white hover:bg-white/10"
                   )}
                 >
                   <Icon className="w-4 h-4" />
@@ -67,7 +67,7 @@ export function Navigation() {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden py-4 border-t border-white/10">
+          <div className="md:hidden py-4 border-t border-gray-800">
             <div className="flex flex-col space-y-2">
               {navItems.map((item) => {
                 const Icon = item.icon;
@@ -80,8 +80,8 @@ export function Navigation() {
                     className={cn(
                       "flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-300",
                       isActive
-                        ? "bg-luxury-gold/20 text-luxury-gold"
-                        : "text-white/70 hover:text-luxury-gold hover:bg-white/5"
+                        ? "bg-white/20 text-white"
+                        : "text-gray-300 hover:text-white hover:bg-white/10"
                     )}
                     onClick={() => setIsOpen(false)}
                   >

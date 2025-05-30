@@ -7,25 +7,25 @@
 
 @layer base {
   :root {
-    --background: 10 10% 4%;
+    --background: 0 0% 3%;
     --foreground: 0 0% 98%;
-    --card: 10 10% 6%;
+    --card: 0 0% 8%;
     --card-foreground: 0 0% 98%;
-    --popover: 10 10% 6%;
+    --popover: 0 0% 8%;
     --popover-foreground: 0 0% 98%;
-    --primary: 46 100% 45%;
-    --primary-foreground: 10 10% 4%;
-    --secondary: 0 0% 16%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 15%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 16%;
+    --muted: 0 0% 15%;
     --muted-foreground: 0 0% 64%;
-    --accent: 0 0% 16%;
+    --accent: 0 0% 15%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 16%;
-    --input: 0 0% 16%;
-    --ring: 46 100% 45%;
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 0 0% 100%;
     --radius: 0.5rem;
   }
 }
@@ -43,23 +43,23 @@
 
 @layer components {
   .luxury-card {
-    @apply bg-gradient-to-br from-luxury-charcoal to-luxury-slate border border-white/10 backdrop-blur-xl;
+    @apply bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 backdrop-blur-xl;
   }
   
   .luxury-glow {
-    @apply shadow-[0_0_30px_rgba(212,175,55,0.15)] border-luxury-gold/20;
+    @apply shadow-[0_0_30px_rgba(255,255,255,0.1)] border-white/30;
   }
   
   .text-gradient {
-    @apply bg-gradient-to-r from-luxury-gold to-luxury-platinum bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent;
   }
   
   .btn-luxury {
-    @apply bg-gradient-to-r from-luxury-gold to-luxury-platinum text-luxury-obsidian font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:scale-105;
+    @apply bg-gradient-to-r from-white to-gray-200 text-black font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:scale-105;
   }
   
   .btn-ghost-luxury {
-    @apply border border-luxury-gold/50 text-luxury-gold hover:bg-luxury-gold/10 hover:border-luxury-gold transition-all duration-300;
+    @apply border border-gray-500 text-gray-300 hover:bg-white/10 hover:border-gray-400 transition-all duration-300;
   }
 }
 
@@ -69,13 +69,13 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-luxury-charcoal;
+  @apply bg-gray-900;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-luxury-gold/50 rounded-full;
+  @apply bg-gray-600 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-luxury-gold;
+  @apply bg-gray-500;
 }

@@ -53,16 +53,16 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Luxury color palette
+        // Monochrome luxury palette
         luxury: {
-          gold: "#D4AF37",
-          platinum: "#E5E4E2",
-          obsidian: "#0A0A0A",
-          charcoal: "#1A1A1A",
-          slate: "#2A2A2A",
-          graphite: "#3A3A3A",
-          pearl: "#F8F8FF",
-          bronze: "#CD7F32",
+          white: "#FFFFFF",
+          light: "#F8F9FA",
+          silver: "#E5E7EB",
+          gray: "#9CA3AF",
+          charcoal: "#374151",
+          dark: "#1F2937",
+          obsidian: "#111827",
+          black: "#000000",
         },
       },
       borderRadius: {
@@ -88,8 +88,8 @@ export default {
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
         "glow": {
-          "0%, 100%": { boxShadow: "0 0 20px rgba(212, 175, 55, 0.2)" },
-          "50%": { boxShadow: "0 0 40px rgba(212, 175, 55, 0.4)" },
+          "0%, 100%": { boxShadow: "0 0 20px rgba(255, 255, 255, 0.1)" },
+          "50%": { boxShadow: "0 0 40px rgba(255, 255, 255, 0.2)" },
         },
       },
       animation: {
@@ -106,8 +106,8 @@ export default {
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-luxury": "linear-gradient(135deg, #0A0A0A 0%, #1A1A1A 50%, #2A2A2A 100%)",
-        "gradient-gold": "linear-gradient(135deg, #D4AF37 0%, #F4E4BC 100%)",
+        "gradient-luxury": "linear-gradient(135deg, #000000 0%, #111827 50%, #1F2937 100%)",
+        "gradient-light": "linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%)",
       },
     },
   },
