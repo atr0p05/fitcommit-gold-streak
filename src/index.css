@@ -1,110 +1,81 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @layer base {
   :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-
-    --card: 0 0% 13%;
-    --card-foreground: 0 0% 100%;
-
-    --popover: 0 0% 13%;
-    --popover-foreground: 0 0% 100%;
-
-    --primary: 0 0% 95%;
-    --primary-foreground: 0 0% 0%;
-
-    --secondary: 0 0% 53%;
-    --secondary-foreground: 0 0% 0%;
-
-    --muted: 0 0% 13%;
-    --muted-foreground: 0 0% 53%;
-
-    --accent: 0 0% 95%;
-    --accent-foreground: 0 0% 0%;
-
-    --destructive: 0 0% 20%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 0 0% 33%;
-    --input: 0 0% 33%;
-    --ring: 0 0% 95%;
-
-    --radius: 0.125rem;
+    --background: 10 10% 4%;
+    --foreground: 0 0% 98%;
+    --card: 10 10% 6%;
+    --card-foreground: 0 0% 98%;
+    --popover: 10 10% 6%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 46 100% 45%;
+    --primary-foreground: 10 10% 4%;
+    --secondary: 0 0% 16%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 16%;
+    --muted-foreground: 0 0% 64%;
+    --accent: 0 0% 16%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 46 100% 45%;
+    --radius: 0.5rem;
   }
 }
 
 @layer base {
   * {
-    @apply border-[#555555];
+    @apply border-border;
   }
-
   body {
-    @apply bg-fitTrue text-white font-sans antialiased;
-    font-feature-settings: "pnum" on, "lnum" on, "ss01" on;
-  }
-
-  h1 {
-    @apply font-display text-[4.5rem] leading-none tracking-tight font-semibold;
-  }
-
-  h2, h3 {
-    @apply font-display text-2xl tracking-tight;
-  }
-
-  h4 {
-    @apply font-display text-xl tracking-tight;
-  }
-
-  h5, h6 {
-    @apply font-sans text-lg tracking-tight;
-  }
-
-  p {
-    @apply font-sans text-lg text-white/80 tracking-tight leading-relaxed;
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "cv11", "ss01";
+    font-variation-settings: "opsz" 32;
   }
 }
 
 @layer components {
-  .stat-circle {
-    @apply relative flex items-center justify-center rounded-full border border-fitSilver/30 bg-fitCharcoal;
+  .luxury-card {
+    @apply bg-gradient-to-br from-luxury-charcoal to-luxury-slate border border-white/10 backdrop-blur-xl;
   }
+  
+  .luxury-glow {
+    @apply shadow-[0_0_30px_rgba(212,175,55,0.15)] border-luxury-gold/20;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-luxury-gold to-luxury-platinum bg-clip-text text-transparent;
+  }
+  
+  .btn-luxury {
+    @apply bg-gradient-to-r from-luxury-gold to-luxury-platinum text-luxury-obsidian font-semibold px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:scale-105;
+  }
+  
+  .btn-ghost-luxury {
+    @apply border border-luxury-gold/50 text-luxury-gold hover:bg-luxury-gold/10 hover:border-luxury-gold transition-all duration-300;
+  }
+}
 
-  .divider {
-    @apply h-px w-full bg-white/10;
-  }
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
 
-  .btn-primary {
-    @apply bg-fitWhite text-fitTrue px-6 py-3 rounded-sm uppercase tracking-widest text-sm font-medium transition-colors hover:bg-fitWhite/90;
-  }
+::-webkit-scrollbar-track {
+  @apply bg-luxury-charcoal;
+}
 
-  .btn-secondary {
-    @apply bg-transparent text-white px-6 py-3 rounded-sm uppercase tracking-widest text-sm font-medium border border-white/30 transition-colors hover:bg-white/10;
-  }
+::-webkit-scrollbar-thumb {
+  @apply bg-luxury-gold/50 rounded-full;
+}
 
-  .card-premium {
-    @apply bg-fitCharcoal p-premium rounded-sm border border-white/5;
-  }
-
-  .indicator-dot {
-    @apply w-2 h-2 rounded-full;
-  }
-
-  .gold-dot {
-    @apply indicator-dot bg-fitWhite;
-  }
-
-  .silver-dot {
-    @apply indicator-dot bg-fitSilver;
-  }
-
-  .hero-text {
-    @apply text-[4.5rem] leading-none tracking-tight font-display font-semibold;
-  }
-
-  .subtitle-text {
-    @apply font-display text-xl tracking-tight text-white/90;
-  }
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-luxury-gold;
 }

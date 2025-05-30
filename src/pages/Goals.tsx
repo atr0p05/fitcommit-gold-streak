@@ -1,143 +1,191 @@
-import React, { useState, useEffect } from 'react';
-import Header from '@/components/Header';
-import GoalCard from '@/components/GoalCard';
-import PerformanceHistory from '@/components/PerformanceHistory';
-import { geofencingService } from '@/utils/geofencingService';
 
-const Goals = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [weeklyGymVisits, setWeeklyGymVisits] = useState(0);
-  
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoaded(true);
-    }, 10);
+import { Navigation } from "@/components/layout/Navigation";
+import { GoalCard } from "@/components/ui/goal-card";
+import { Plus, Calendar, Target } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-    setWeeklyGymVisits(geofencingService.getWeeklyWorkoutCount());
-
-    const interval = setInterval(() => {
-      setWeeklyGymVisits(geofencingService.getWeeklyWorkoutCount());
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, []);
-
+export default function Goals() {
   const dailyGoals = [
     {
-      id: 1,
       title: "Daily Steps",
-      description: "Reach your daily step target",
-      currentValue: 8734,
-      targetValue: 10000,
+      description: "Walk 10,000 steps every day",
+      progress: 87,
+      current: 8742,
+      target: 10000,
       unit: "steps",
-      isComplete: false
+      penalty: 0.99,
     },
     {
-      id: 2,
+      title: "Water Intake",
+      description: "Drink 8 glasses of water daily",
+      progress: 75,
+      current: 6,
+      target: 8,
+      unit: "glasses",
+      penalty: 0.99,
+    },
+    {
       title: "Active Minutes",
-      description: "Time spent in movement",
-      currentValue: 45,
-      targetValue: 60,
-      unit: "min",
-      isComplete: false
-    }
+      description: "30 minutes of activity daily",
+      progress: 100,
+      current: 45,
+      target: 30,
+      unit: "minutes",
+      isCompleted: true,
+    },
   ];
-  
+
   const weeklyGoals = [
     {
-      id: 3,
-      title: "Weekly Workouts",
-      description: "Complete weekly workout sessions",
-      currentValue: 4,
-      targetValue: 5,
+      title: "Gym Sessions",
+      description: "Complete 3 gym workouts this week",
+      progress: 67,
+      current: 2,
+      target: 3,
       unit: "sessions",
-      isComplete: false
+      deadline: "2 days left",
+      penalty: 4.99,
     },
     {
-      id: 4,
-      title: "Gym Check-ins",
-      description: "Visit your home gym location",
-      currentValue: weeklyGymVisits,
-      targetValue: 3,
-      unit: "visits",
-      isComplete: weeklyGymVisits >= 3
+      title: "Strength Training",
+      description: "2 strength training sessions per week",
+      progress: 50,
+      current: 1,
+      target: 2,
+      unit: "sessions",
+      deadline: "3 days left",
+      penalty: 2.99,
     },
     {
-      id: 5,
-      title: "Heart Rate Zones",
-      description: "Minutes in cardio zone",
-      currentValue: 95,
-      targetValue: 120,
-      unit: "min",
-      isComplete: false
-    }
+      title: "Cardio Hours",
+      description: "Complete 3 hours of cardio this week",
+      progress: 83,
+      current: 2.5,
+      target: 3,
+      unit: "hours",
+      deadline: "4 days left",
+      penalty: 3.99,
+    },
   ];
-  
-  return (
-    <div className="min-h-screen bg-fitTrue">
-      <Header />
-      
-      <div className="p-4 pt-24 pb-24 max-w-md mx-auto">
-        <section className={`mb-6 transition-all duration-900 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-          <PerformanceHistory />
-        </section>
 
-        <section className={`mb-premium transition-all duration-900 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-          <div className="flex justify-between items-center mb-6">
-            <h2 className={`text-xl font-medium transition-all duration-600 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>Daily Goals</h2>
-            <div className={`flex items-center transition-all duration-600 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-              <span className="text-xs text-fitSilver uppercase tracking-wider mr-2">Penalties Today:</span>
-              <span className="text-sm text-fitError font-medium">$0.99</span>
+  const monthlyGoals = [
+    {
+      title: "Weight Goal",
+      description: "Lose 2 pounds this month",
+      progress: 75,
+      current: 1.5,
+      target: 2,
+      unit: "lbs",
+      deadline: "8 days left",
+      penalty: 9.99,
+    },
+    {
+      title: "Perfect Weeks",
+      description: "Complete 3 perfect weeks",
+      progress: 67,
+      current: 2,
+      target: 3,
+      unit: "weeks",
+      deadline: "12 days left",
+      penalty: 14.99,
+    },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-luxury">
+      <Navigation />
+      
+      <main className="pt-16">
+        <div className="container mx-auto px-4 py-12">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h1 className="text-4xl font-bold text-white mb-2">Your Goals</h1>
+              <p className="text-white/70">Track your progress and stay accountable</p>
+            </div>
+            <Button className="btn-luxury">
+              <Plus className="w-5 h-5 mr-2" />
+              New Goal
+            </Button>
+          </div>
+
+          <Tabs defaultValue="daily" className="space-y-8">
+            <TabsList className="grid w-full max-w-md grid-cols-3 bg-luxury-charcoal">
+              <TabsTrigger value="daily" className="data-[state=active]:bg-luxury-gold data-[state=active]:text-luxury-obsidian">
+                Daily
+              </TabsTrigger>
+              <TabsTrigger value="weekly" className="data-[state=active]:bg-luxury-gold data-[state=active]:text-luxury-obsidian">
+                Weekly
+              </TabsTrigger>
+              <TabsTrigger value="monthly" className="data-[state=active]:bg-luxury-gold data-[state=active]:text-luxury-obsidian">
+                Monthly
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="daily" className="space-y-6">
+              <div className="flex items-center space-x-2 mb-6">
+                <Calendar className="w-5 h-5 text-luxury-gold" />
+                <h2 className="text-2xl font-bold text-white">Daily Goals</h2>
+                <span className="text-sm text-white/60">Reset every day at midnight</span>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                {dailyGoals.map((goal) => (
+                  <GoalCard key={goal.title} {...goal} />
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="weekly" className="space-y-6">
+              <div className="flex items-center space-x-2 mb-6">
+                <Target className="w-5 h-5 text-luxury-gold" />
+                <h2 className="text-2xl font-bold text-white">Weekly Goals</h2>
+                <span className="text-sm text-white/60">Reset every Monday</span>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                {weeklyGoals.map((goal) => (
+                  <GoalCard key={goal.title} {...goal} />
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="monthly" className="space-y-6">
+              <div className="flex items-center space-x-2 mb-6">
+                <Calendar className="w-5 h-5 text-luxury-gold" />
+                <h2 className="text-2xl font-bold text-white">Monthly Goals</h2>
+                <span className="text-sm text-white/60">Reset on the 1st of each month</span>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {monthlyGoals.map((goal) => (
+                  <GoalCard key={goal.title} {...goal} />
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
+
+          {/* Summary Section */}
+          <div className="luxury-card rounded-2xl p-8 mt-12">
+            <h3 className="text-2xl font-bold text-white mb-6">Goal Summary</h3>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-luxury-gold mb-2">8</div>
+                <div className="text-sm text-white/60">Active Goals</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-luxury-gold mb-2">6</div>
+                <div className="text-sm text-white/60">On Track</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-red-400 mb-2">$23.93</div>
+                <div className="text-sm text-white/60">At Risk</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-green-400 mb-2">$47.93</div>
+                <div className="text-sm text-white/60">Saved This Month</div>
+              </div>
             </div>
           </div>
-          
-          <div className="space-y-4">
-            {dailyGoals.map((goal, index) => (
-              <div
-                key={goal.id}
-                className={`transition-all duration-900 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
-                style={{
-                  transitionDelay: `${150 * (index + 1)}ms`,
-                }}
-              >
-                <GoalCard {...goal} />
-              </div>
-            ))}
-          </div>
-        </section>
-        
-        <section className={`transition-all duration-900 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-          <div className="flex justify-between items-center mb-6">
-            <h2 className={`text-xl font-medium transition-all duration-600 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>Weekly Goals</h2>
-            <div className={`flex items-center transition-all duration-600 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-              <span className="text-xs text-fitSilver uppercase tracking-wider mr-2">Week Penalties:</span>
-              <span className="text-sm text-fitError font-medium">$0.99</span>
-            </div>
-          </div>
-          
-          <div className="space-y-4">
-            {weeklyGoals.map((goal, index) => (
-              <div
-                key={goal.id}
-                className={`transition-all duration-900 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
-                style={{
-                  transitionDelay: `${150 * (index + 1)}ms`,
-                }}
-              >
-                <GoalCard {...goal} />
-              </div>
-            ))}
-          </div>
-        </section>
-        
-        <div className={`mt-8 p-4 bg-fitCharcoal rounded-sm border border-white/5 transition-all duration-900 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-          <p className="text-xs text-center uppercase tracking-widest mb-4">Quarterly Pause</p>
-          <p className="text-sm text-center mb-4">You have 2 pauses available this quarter for vacations or illness</p>
-          <button className="btn-secondary w-full">Activate Pause (1 Week)</button>
         </div>
-      </div>
+      </main>
     </div>
   );
-};
-
-export default Goals;
+}
