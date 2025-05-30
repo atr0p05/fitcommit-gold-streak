@@ -9,6 +9,8 @@ import Index from "./pages/Index";
 import Goals from "./pages/Goals";
 import Progress from "./pages/Progress";
 import Profile from "./pages/Profile";
+import Friends from "./pages/Friends";
+import Settings from "./pages/Settings";
 import OnboardingFlow from "./components/OnboardingFlow";
 
 const queryClient = new QueryClient();
@@ -51,6 +53,8 @@ const App = () => {
               <Route path="/goals" element={<Goals />} />
               <Route path="/progress" element={<Progress />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/friends" element={<Friends />} />
+              <Route path="/settings" element={<Settings />} />
             </Routes>
           </BrowserRouter>
         </TooltipProvider>

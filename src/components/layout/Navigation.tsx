@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Target, TrendingUp, User } from "lucide-react";
+import { Menu, X, Target, TrendingUp, User, Users, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -9,7 +9,9 @@ const navItems = [
   { href: "/", label: "Dashboard", icon: Target },
   { href: "/goals", label: "Goals", icon: Target },
   { href: "/progress", label: "Progress", icon: TrendingUp },
+  { href: "/friends", label: "Friends", icon: Users },
   { href: "/profile", label: "Profile", icon: User },
+  { href: "/settings", label: "Settings", icon: Bell },
 ];
 
 export function Navigation() {
