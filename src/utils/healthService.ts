@@ -1,145 +1,109 @@
 
-import { Capacitor } from '@capacitor/core';
-import { toast } from "@/components/ui/use-toast";
-
-// Define interfaces for our health data
+// Health service for iOS HealthKit integration
 export interface HealthData {
   date: string;
   value: number;
+  unit: string;
 }
-
-// Mock data for when running in browser
-const mockData = {
-  steps: Array.from({ length: 7 }, (_, i) => ({
-    date: new Date(Date.now() - (6 - i) * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-    value: Math.floor(Math.random() * 4000) + 6000
-  })),
-  workouts: Array.from({ length: 7 }, (_, i) => ({
-    date: new Date(Date.now() - (6 - i) * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-    value: Math.floor(Math.random() * 3) + 1
-  })),
-  heartRate: Array.from({ length: 7 }, (_, i) => ({
-    date: new Date(Date.now() - (6 - i) * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-    value: Math.floor(Math.random() * 20) + 60
-  }))
-};
 
 class HealthService {
-  private isAuthorized = false;
-  private isNative = Capacitor.isNativePlatform();
+  private isHealthAuthorized = false;
 
-  constructor() {
-    // Initialize with an auth check if on native platform
-    if (this.isNative) {
-      this.checkAuthorization();
-    }
-  }
-
-  private async checkAuthorization(): Promise<boolean> {
-    if (!this.isNative) return false;
-
+  async requestAuthorization(): Promise<boolean> {
     try {
-      // In a real implementation, we would use the Capacitor Health plugin
-      // const result = await CapacitorHealth.isAuthorized();
-      // this.isAuthorized = result.authorized;
-      // For now, we're mocking this
-      this.isAuthorized = false;
-      return this.isAuthorized;
-    } catch (error) {
-      console.error('Health authorization check failed:', error);
-      return false;
-    }
-  }
-
-  public async requestAuthorization(): Promise<boolean> {
-    if (!this.isNative) {
-      console.log('Health authorization requested in browser - simulating success');
-      this.isAuthorized = true;
+      // In a real iOS app, this would use Capacitor HealthKit plugin
+      console.log('Requesting HealthKit authorization...');
+      
+      // Simulate the authorization process
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      this.isHealthAuthorized = true;
+      console.log('HealthKit authorization granted');
       return true;
-    }
-
-    try {
-      // Here we would use the Capacitor Health plugin to request authorization
-      // const result = await CapacitorHealth.requestAuthorization({
-      //   readTypes: ['steps', 'heartRate', 'workout'],
-      //   writeTypes: []
-      // });
-      // this.isAuthorized = result.authorized;
-      
-      // For now, we'll simulate a success
-      console.log('Requesting Health authorization...');
-      this.isAuthorized = true;
-      
-      // Log success
-      console.log('Health authorization granted:', this.isAuthorized);
-      return this.isAuthorized;
     } catch (error) {
-      console.error('Health authorization request failed:', error);
+      console.error('HealthKit authorization failed:', error);
       return false;
     }
   }
 
-  public async getStepData(days: number = 7): Promise<HealthData[]> {
-    if (!this.isNative || !this.isAuthorized) {
-      console.log('Using mock step data');
-      return mockData.steps;
+  async getStepData(days: number = 7): Promise<HealthData[]> {
+    if (!this.isHealthAuthorized) {
+      console.warn('HealthKit not authorized');
+      return [];
     }
 
-    try {
-      // Here we would use the Capacitor Health plugin to fetch step data
-      // const result = await CapacitorHealth.queryHKQuantityType({
-      //   sampleType: 'steps',
-      //   startDate: new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString(),
-      //   endDate: new Date().toISOString(),
-      //   limit: days
-      // });
+    // Simulate step data for the last 7 days
+    const stepData: HealthData[] = [];
+    const today = new Date();
+    
+    for (let i = days - 1; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - i);
       
-      // For now, return mock data
-      return mockData.steps;
-    } catch (error) {
-      console.error('Fetching step data failed:', error);
+      stepData.push({
+        date: date.toISOString().split('T')[0],
+        value: Math.floor(Math.random() * 5000) + 6000, // 6000-11000 steps
+        unit: 'steps'
+      });
+    }
+    
+    return stepData;
+  }
+
+  async getHeartRateData(days: number = 7): Promise<HealthData[]> {
+    if (!this.isHealthAuthorized) {
+      console.warn('HealthKit not authorized');
       return [];
     }
+
+    // Simulate heart rate data
+    const heartRateData: HealthData[] = [];
+    const today = new Date();
+    
+    for (let i = days - 1; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - i);
+      
+      heartRateData.push({
+        date: date.toISOString().split('T')[0],
+        value: Math.floor(Math.random() * 40) + 120, // 120-160 BPM
+        unit: 'BPM'
+      });
+    }
+    
+    return heartRateData;
   }
 
-  public async getHeartRateData(days: number = 7): Promise<HealthData[]> {
-    if (!this.isNative || !this.isAuthorized) {
-      console.log('Using mock heart rate data');
-      return mockData.heartRate;
-    }
-
-    try {
-      // Real implementation would use Capacitor Health plugin
-      return mockData.heartRate;
-    } catch (error) {
-      console.error('Fetching heart rate data failed:', error);
+  async getWorkoutData(days: number = 7): Promise<HealthData[]> {
+    if (!this.isHealthAuthorized) {
+      console.warn('HealthKit not authorized');
       return [];
     }
-  }
 
-  public async getWorkoutData(days: number = 7): Promise<HealthData[]> {
-    if (!this.isNative || !this.isAuthorized) {
-      console.log('Using mock workout data');
-      return mockData.workouts;
+    // Simulate workout data
+    const workoutData: HealthData[] = [];
+    const today = new Date();
+    
+    for (let i = days - 1; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - i);
+      
+      // Random chance of workout on each day
+      if (Math.random() > 0.4) {
+        workoutData.push({
+          date: date.toISOString().split('T')[0],
+          value: Math.floor(Math.random() * 60) + 30, // 30-90 minutes
+          unit: 'minutes'
+        });
+      }
     }
-
-    try {
-      // Real implementation would use Capacitor Health plugin
-      return mockData.workouts;
-    } catch (error) {
-      console.error('Fetching workout data failed:', error);
-      return [];
-    }
+    
+    return workoutData;
   }
 
-  public isHealthAvailable(): boolean {
-    return this.isNative;
-  }
-
-  public isHealthAuthorized(): boolean {
-    return this.isAuthorized;
+  isHealthKitAuthorized(): boolean {
+    return this.isHealthAuthorized;
   }
 }
 
-// Export a singleton instance
 export const healthService = new HealthService();
