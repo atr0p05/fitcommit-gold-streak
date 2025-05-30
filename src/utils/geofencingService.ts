@@ -1,8 +1,7 @@
-
 import { Capacitor } from '@capacitor/core';
 import { Geolocation } from '@capacitor/geolocation';
 
-interface GymLocation {
+export interface GymLocation {
   id: string;
   name: string;
   latitude: number;
@@ -69,6 +68,25 @@ class GeofencingService {
   stopTracking(): void {
     this.isTracking = false;
     console.log('Stopped gym visit tracking');
+  }
+
+  getGymLocations(): GymLocation[] {
+    return [...this.gymLocations];
+  }
+
+  addGymLocation(gym: Omit<GymLocation, 'id'>): GymLocation {
+    const newGym: GymLocation = {
+      ...gym,
+      id: `gym-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+    };
+    this.gymLocations.push(newGym);
+    return newGym;
+  }
+
+  removeGymLocation(gymId: string): boolean {
+    const initialLength = this.gymLocations.length;
+    this.gymLocations = this.gymLocations.filter(gym => gym.id !== gymId);
+    return this.gymLocations.length < initialLength;
   }
 
   private async monitorLocation(): Promise<void> {

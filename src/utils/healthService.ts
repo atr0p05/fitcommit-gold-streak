@@ -8,17 +8,12 @@ export interface HealthData {
   unit?: string;
 }
 
-export interface HealthKitPermissions {
-  read: string[];
-  write: string[];
-}
-
 class HealthService {
   private authorized = false;
   private platformSupported = false;
 
   constructor() {
-    this.platformSupported = Capacitor.isNativePlatform();
+    this.platformSupported = Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'ios';
   }
 
   async requestAuthorization(): Promise<boolean> {
@@ -28,25 +23,13 @@ class HealthService {
     }
 
     try {
-      // Request HealthKit permissions
-      const permissions: HealthKitPermissions = {
-        read: [
-          'HKQuantityTypeIdentifierStepCount',
-          'HKQuantityTypeIdentifierHeartRate',
-          'HKQuantityTypeIdentifierActiveEnergyBurned',
-          'HKQuantityTypeIdentifierDistanceWalkingRunning',
-          'HKWorkoutTypeIdentifier',
-          'HKQuantityTypeIdentifierAppleExerciseTime'
-        ],
-        write: []
-      };
-
-      // This would be the actual HealthKit permission request
-      // For now, we'll simulate the request
-      console.log('Requesting HealthKit permissions:', permissions);
+      // In a real app, this would use a native plugin like @capacitor-community/health
+      // For now, we'll simulate authorization
+      console.log('Requesting HealthKit permissions...');
       
-      // Simulate permission grant
+      // Simulate permission grant for development
       this.authorized = true;
+      console.log('HealthKit permissions granted');
       return true;
     } catch (error) {
       console.error('Failed to request HealthKit authorization:', error);
@@ -65,8 +48,8 @@ class HealthService {
     }
 
     try {
-      // This would query actual HealthKit data
-      // For now, we'll return simulated data that represents real patterns
+      // This would query actual HealthKit data in a real implementation
+      // For development, we'll return realistic sample data
       const data: HealthData[] = [];
       const today = new Date();
       
@@ -86,6 +69,7 @@ class HealthService {
         });
       }
       
+      console.log('Retrieved step data:', data);
       return data;
     } catch (error) {
       console.error('Failed to fetch step data:', error);
@@ -117,6 +101,7 @@ class HealthService {
         });
       }
       
+      console.log('Retrieved heart rate data:', data);
       return data;
     } catch (error) {
       console.error('Failed to fetch heart rate data:', error);
@@ -149,6 +134,7 @@ class HealthService {
         }
       }
       
+      console.log('Retrieved workout data:', data);
       return data;
     } catch (error) {
       console.error('Failed to fetch workout data:', error);
