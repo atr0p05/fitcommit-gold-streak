@@ -1,229 +1,164 @@
 
 import { Capacitor } from '@capacitor/core';
-import { Geolocation, Position } from '@capacitor/geolocation';
-import { toast } from "@/hooks/use-toast";
-import { v4 as uuidv4 } from 'uuid';
+import { Geolocation } from '@capacitor/geolocation';
 
-export interface GymLocation {
+interface GymLocation {
   id: string;
   name: string;
   latitude: number;
   longitude: number;
-  radius: number;
+  radius: number; // in meters
+}
+
+interface WorkoutSession {
+  gymId: string;
+  startTime: Date;
+  endTime?: Date;
+  duration?: number; // in minutes
 }
 
 class GeofencingService {
-  private createGeolocationPosition(coords: Position['coords']): GeolocationPosition {
-    return {
-      coords: {
-        latitude: coords.latitude,
-        longitude: coords.longitude,
-        accuracy: coords.accuracy,
-        altitude: coords.altitude,
-        altitudeAccuracy: coords.altitudeAccuracy,
-        heading: coords.heading,
-        speed: coords.speed,
-        toJSON: function() {
-          return {
-            latitude: this.latitude,
-            longitude: this.longitude,
-            accuracy: this.accuracy,
-            altitude: this.altitude,
-            altitudeAccuracy: this.altitudeAccuracy,
-            heading: this.heading,
-            speed: this.speed
-          };
-        }
-      },
-      timestamp: Date.now(),
-      toJSON: () => ({
-        coords: {
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-          accuracy: coords.accuracy,
-          altitude: coords.altitude,
-          altitudeAccuracy: coords.altitudeAccuracy,
-          heading: coords.heading,
-          speed: coords.speed
-        },
-        timestamp: Date.now()
-      })
-    };
-  }
+  private isTracking = false;
+  private currentLocation: { latitude: number; longitude: number } | null = null;
+  private workoutSessions: WorkoutSession[] = [];
+  private gymLocations: GymLocation[] = [
+    {
+      id: 'equinox-1',
+      name: 'Equinox Downtown',
+      latitude: 40.7128,
+      longitude: -74.0060,
+      radius: 100
+    },
+    {
+      id: 'equinox-2', 
+      name: 'Equinox Midtown',
+      latitude: 40.7549,
+      longitude: -73.9840,
+      radius: 100
+    }
+  ];
 
-  private workoutLocations: GymLocation[] = [];
-  private workoutDates: Date[] = [];
-  private currentWorkout: { startTime?: number, location?: { lat: number, lng: number } } = {};
-
-  private onLocationUpdate(position: Position) {
-    const pos = this.createGeolocationPosition(position.coords);
-    
+  async startTracking(): Promise<boolean> {
     if (!Capacitor.isNativePlatform()) {
-      console.log('Location update:', pos.coords.latitude, pos.coords.longitude);
-      return;
-    }
-
-    const gymLocation = this.workoutLocations[0]; // Use the first gym location for simplicity
-    if (!gymLocation) {
-      console.warn('No gym location set for geofencing.');
-      return;
-    }
-
-    const distance = this.calculateDistance(
-      pos.coords.latitude,
-      pos.coords.longitude,
-      gymLocation.latitude,
-      gymLocation.longitude
-    );
-
-    const isInsideGeofence = distance < 100; // 100 meters
-
-    if (isInsideGeofence && !this.currentWorkout.startTime) {
-      // Start workout
-      this.startWorkout(gymLocation.latitude, gymLocation.longitude);
-      toast({
-        title: "Workout Started",
-        description: `You've arrived at ${gymLocation.name}. Tracking your workout.`,
-      });
-    } else if (!isInsideGeofence && this.currentWorkout.startTime) {
-      // End workout
-      const duration = Date.now() - this.currentWorkout.startTime;
-        if (duration >= 30 * 60 * 1000) { // 30 minutes
-          this.workoutDates.push(new Date());
-          toast({
-            title: "Workout Complete",
-            description: `Great job! You worked out for ${Math.round(duration / (60 * 1000))} minutes.`,
-          });
-        } else {
-          toast({
-            title: "Workout Ended",
-            description: `You left ${gymLocation.name} too soon. Minimum workout duration is 30 minutes.`,
-            variant: "destructive",
-          });
-        }
-      this.endWorkout();
-    } else {
-      //In geofence
-    }
-
-    if (this.currentWorkout.startTime && this.currentWorkout.location) {
-      const duration = Date.now() - this.currentWorkout.startTime;
-      if (duration >= 30 * 60 * 1000) { // 30 minutes
-        this.workoutDates.push(new Date());
-      }
-    }
-  }
-
-  private async getCurrentPosition(): Promise<Position | null> {
-    try {
-      const coordinates = await Geolocation.getCurrentPosition();
-      return coordinates;
-    } catch (error) {
-      console.error('Error getting current position:', error);
-      toast({
-        title: "Location Error",
-        description: "Could not get current location. Please ensure location services are enabled.",
-        variant: "destructive",
-      });
-      return null;
-    }
-  }
-
-  public startTracking(): boolean {
-    if (!Capacitor.isNativePlatform()) {
-      toast({
-        title: "Location Tracking Unavailable",
-        description: "Location tracking requires a native device.",
-        variant: "destructive",
-      });
+      console.warn('Geolocation tracking is only available on native platforms');
       return false;
     }
 
-    Geolocation.requestPermissions().then(result => {
-      if (result.location === 'granted') {
-        Geolocation.watchPosition({}, (position, err) => {
-          if (err) {
-            console.log(err)
-            return;
-          }
-          if (position) {
-            this.onLocationUpdate(position);
-          }
-        });
-      } else {
-        toast({
-          title: "Location Permissions Denied",
-          description: "Please enable location permissions to track gym visits.",
-          variant: "destructive",
-        });
+    try {
+      // Request location permissions
+      const permissions = await Geolocation.requestPermissions();
+      
+      if (permissions.location !== 'granted') {
+        console.error('Location permission denied');
         return false;
       }
-    });
-    return true;
+
+      this.isTracking = true;
+      console.log('Started gym visit tracking');
+      
+      // Start monitoring location
+      this.monitorLocation();
+      
+      return true;
+    } catch (error) {
+      console.error('Failed to start geofencing:', error);
+      return false;
+    }
   }
 
-  public stopTracking(): void {
-    Geolocation.clearWatch({ id: 'watch' });
+  stopTracking(): void {
+    this.isTracking = false;
+    console.log('Stopped gym visit tracking');
+  }
+
+  private async monitorLocation(): Promise<void> {
+    if (!this.isTracking) return;
+
+    try {
+      const position = await Geolocation.getCurrentPosition();
+      this.currentLocation = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude
+      };
+
+      // Check if user is near any gym
+      this.checkGymProximity();
+
+      // Continue monitoring
+      setTimeout(() => this.monitorLocation(), 60000); // Check every minute
+    } catch (error) {
+      console.error('Error monitoring location:', error);
+    }
+  }
+
+  private checkGymProximity(): void {
+    if (!this.currentLocation) return;
+
+    for (const gym of this.gymLocations) {
+      const distance = this.calculateDistance(
+        this.currentLocation.latitude,
+        this.currentLocation.longitude,
+        gym.latitude,
+        gym.longitude
+      );
+
+      if (distance <= gym.radius) {
+        console.log(`User is at ${gym.name}`);
+        this.handleGymEntry(gym.id);
+      }
+    }
   }
 
   private calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const R = 6371e3; // metres
-    const φ1 = lat1 * Math.PI / 180; // φ, λ in radians
+    const R = 6371e3; // Earth's radius in meters
+    const φ1 = lat1 * Math.PI / 180;
     const φ2 = lat2 * Math.PI / 180;
     const Δφ = (lat2 - lat1) * Math.PI / 180;
     const Δλ = (lon2 - lon1) * Math.PI / 180;
 
-    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-      Math.cos(φ1) * Math.cos(φ2) *
-      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+              Math.cos(φ1) * Math.cos(φ2) *
+              Math.sin(Δλ/2) * Math.sin(Δλ/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
-    const distance = R * c;
-    return distance;
+    return R * c;
   }
 
-  private startWorkout(lat: number, lng: number): void {
-    this.currentWorkout = {
-      startTime: Date.now(),
-      location: { lat, lng }
-    };
-  }
+  private handleGymEntry(gymId: string): void {
+    // Check if there's already an active session
+    const activeSession = this.workoutSessions.find(
+      session => session.gymId === gymId && !session.endTime
+    );
 
-  private endWorkout(): void {
-    this.currentWorkout = {};
-  }
-
-  public getWorkoutDates(): Date[] {
-    return this.workoutDates;
-  }
-
-  public getWeeklyWorkoutCount(): number {
-    const today = new Date();
-    const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-    let count = 0;
-    for (const date of this.workoutDates) {
-      if (date >= startOfWeek) {
-        count++;
-      }
+    if (!activeSession) {
+      // Start new workout session
+      this.workoutSessions.push({
+        gymId,
+        startTime: new Date()
+      });
+      console.log(`Started workout session at gym ${gymId}`);
     }
-    return count;
   }
 
-  // Add gym location management methods
-  public getGymLocations(): GymLocation[] {
-    return [...this.workoutLocations];
+  getWorkoutDates(): Date[] {
+    return this.workoutSessions
+      .filter(session => session.duration && session.duration >= 30) // At least 30 minutes
+      .map(session => session.startTime);
   }
 
-  public addGymLocation(location: Omit<GymLocation, 'id'>): GymLocation {
-    const newLocation = { ...location, id: uuidv4() };
-    this.workoutLocations.push(newLocation);
-    return newLocation;
+  getWeeklyWorkoutCount(): number {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+    return this.workoutSessions.filter(session => 
+      session.startTime >= oneWeekAgo && 
+      session.duration && 
+      session.duration >= 30
+    ).length;
   }
 
-  public removeGymLocation(id: string): boolean {
-    const initialLength = this.workoutLocations.length;
-    this.workoutLocations = this.workoutLocations.filter(loc => loc.id !== id);
-    return initialLength > this.workoutLocations.length;
+  isTrackingActive(): boolean {
+    return this.isTracking;
   }
 }
 
