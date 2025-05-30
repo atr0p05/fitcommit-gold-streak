@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { Navigation } from "@/components/layout/Navigation";
+import Header from "@/components/Header";
 import { StatCard } from "@/components/ui/stat-card";
 import { GoalCard } from "@/components/ui/goal-card";
 import { Activity, Target, TrendingUp, Zap, Calendar, Heart } from "lucide-react";
@@ -73,11 +73,11 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-gradient-luxury">
-      <Navigation />
+      <Header />
       
-      <main className="pt-16">
+      <main className="container mx-auto px-4 pt-24 pb-24">
         {/* Welcome Section */}
-        <section className="container mx-auto px-4 py-6">
+        <section className="py-6">
           <div className={`transition-all duration-1000 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}>
@@ -89,7 +89,7 @@ export default function Index() {
         </section>
 
         {/* Hero Section */}
-        <section className="container mx-auto px-4 py-8">
+        <section className="py-8">
           <div className={`max-w-4xl mx-auto text-center transition-all duration-1000 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}>
@@ -123,7 +123,7 @@ export default function Index() {
         </section>
 
         {/* Stats Section */}
-        <section className="container mx-auto px-4 py-8">
+        <section className="py-8">
           <h2 className="text-2xl font-bold text-white mb-6 text-center">Today's Performance</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
             {stats.map((stat, index) => (
@@ -141,7 +141,7 @@ export default function Index() {
         </section>
 
         {/* Active Goals Section */}
-        <section className="container mx-auto px-4 py-8">
+        <section className="py-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-white">Active Goals</h2>
             <Link to="/goals">
@@ -168,7 +168,7 @@ export default function Index() {
         </section>
 
         {/* Commitment Summary */}
-        <section className="container mx-auto px-4 py-8">
+        <section className="py-8">
           <div className="luxury-card rounded-2xl p-6 max-w-4xl mx-auto text-center">
             <div className="flex items-center justify-center mb-4">
               <div className="p-3 rounded-full bg-white/20">
