@@ -104,7 +104,7 @@ const LocationPicker: React.FC<LocationPickerProps> = ({ onLocationSelect, onClo
         <Button
           onClick={getCurrentLocation}
           disabled={isGettingLocation}
-          className="w-full bg-fitGold hover:bg-fitGold/90 text-black"
+          className="w-full bg-white hover:bg-gray-100 text-black font-medium"
         >
           {isGettingLocation ? (
             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
