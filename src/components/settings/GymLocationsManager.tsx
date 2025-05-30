@@ -2,83 +2,61 @@
 import React, { useState } from 'react';
 import { MapPin, Plus, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { geofencingService, GymLocation } from '@/utils/geofencingService';
+import { useToast } from '@/hooks/use-toast';
+import LocationPicker from './LocationPicker';
 
 const GymLocationsManager = () => {
   const [gyms, setGyms] = useState<GymLocation[]>(geofencingService.getGymLocations());
-  const [newGymName, setNewGymName] = useState('');
-  const [newGymLatitude, setNewGymLatitude] = useState('');
-  const [newGymLongitude, setNewGymLongitude] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { toast } = useToast();
 
-  const handleAddGym = () => {
-    if (newGymName && newGymLatitude && newGymLongitude) {
-      const newGym = geofencingService.addGymLocation({
-        name: newGymName,
-        latitude: parseFloat(newGymLatitude),
-        longitude: parseFloat(newGymLongitude),
-        radius: 100 // Default radius in meters
-      });
-      setGyms([...gyms, newGym]);
-      setNewGymName('');
-      setNewGymLatitude('');
-      setNewGymLongitude('');
-    }
+  const handleLocationSelect = (location: { name: string; latitude: number; longitude: number }) => {
+    const newGym = geofencingService.addGymLocation({
+      name: location.name,
+      latitude: location.latitude,
+      longitude: location.longitude,
+      radius: 100 // Default radius in meters
+    });
+    
+    setGyms([...gyms, newGym]);
+    setIsDialogOpen(false);
+    
+    toast({
+      title: "Gym Added",
+      description: `${location.name} has been added to your gym locations.`,
+    });
   };
 
   const handleRemoveGym = (gymId: string) => {
+    const gym = gyms.find(g => g.id === gymId);
     if (geofencingService.removeGymLocation(gymId)) {
       setGyms(gyms.filter(gym => gym.id !== gymId));
+      toast({
+        title: "Gym Removed",
+        description: `${gym?.name || 'Gym'} has been removed from your locations.`,
+      });
     }
   };
 
   return (
     <div className="space-y-4">
-      <Dialog>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" className="w-full">
+          <Button variant="outline" className="w-full bg-fitCharcoal border-white/20 text-white hover:bg-fitCharcoal/80">
             <Plus className="w-4 h-4 mr-2" />
             Add New Gym Location
           </Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="bg-fitCharcoal border-white/20">
           <DialogHeader>
-            <DialogTitle>Add New Gym Location</DialogTitle>
+            <DialogTitle className="text-white">Add New Gym Location</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 p-4">
-            <div>
-              <Input
-                placeholder="Gym Name"
-                value={newGymName}
-                onChange={(e) => setNewGymName(e.target.value)}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <Input
-                placeholder="Latitude"
-                type="number"
-                step="0.000001"
-                value={newGymLatitude}
-                onChange={(e) => setNewGymLatitude(e.target.value)}
-              />
-              <Input
-                placeholder="Longitude"
-                type="number"
-                step="0.000001"
-                value={newGymLongitude}
-                onChange={(e) => setNewGymLongitude(e.target.value)}
-              />
-            </div>
-            <Button 
-              variant="default" 
-              className="w-full"
-              onClick={handleAddGym}
-              disabled={!newGymName || !newGymLatitude || !newGymLongitude}
-            >
-              Add Gym
-            </Button>
-          </div>
+          <LocationPicker 
+            onLocationSelect={handleLocationSelect}
+            onClose={() => setIsDialogOpen(false)}
+          />
         </DialogContent>
       </Dialog>
 
@@ -89,24 +67,32 @@ const GymLocationsManager = () => {
             className="flex items-center justify-between p-4 bg-fitCharcoal rounded-sm border border-white/5"
           >
             <div className="flex items-center">
-              <MapPin className="w-4 h-4 mr-2 text-fitSilver" />
-              <div>
-                <p className="text-sm font-medium">{gym.name}</p>
+              <MapPin className="w-4 h-4 mr-2 text-fitGold" />
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-white truncate">{gym.name}</p>
                 <p className="text-xs text-fitSilver">
-                  {gym.latitude.toFixed(6)}, {gym.longitude.toFixed(6)}
+                  {gym.latitude.toFixed(6)}, {gym.longitude.toFixed(6)} • {gym.radius}m radius
                 </p>
               </div>
             </div>
             <Button
               variant="ghost"
               size="icon"
-              className="text-fitError hover:text-fitError/90"
+              className="text-fitError hover:text-fitError/90 hover:bg-fitError/10"
               onClick={() => handleRemoveGym(gym.id)}
             >
               <Trash className="w-4 h-4" />
             </Button>
           </div>
         ))}
+        
+        {gyms.length === 0 && (
+          <div className="text-center py-8 text-fitSilver">
+            <MapPin className="w-8 h-8 mx-auto mb-2 opacity-50" />
+            <p className="text-sm">No gym locations added yet</p>
+            <p className="text-xs">Add your first gym to start tracking workouts</p>
+          </div>
+        )}
       </div>
     </div>
   );
