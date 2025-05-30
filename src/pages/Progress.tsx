@@ -62,16 +62,16 @@ export default function Progress() {
           <p className="text-white/70">Monitor your journey and celebrate your wins</p>
         </div>
 
+        {/* Performance History with Heart Rate Monitor - Moved to top */}
+        <div className="mb-12">
+          <PerformanceHistory />
+        </div>
+
         {/* Progress Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {progressStats.map((stat) => (
             <StatCard key={stat.title} {...stat} />
           ))}
-        </div>
-
-        {/* Performance History with Heart Rate Monitor */}
-        <div className="mb-12">
-          <PerformanceHistory />
         </div>
 
         {/* Weekly Overview */}

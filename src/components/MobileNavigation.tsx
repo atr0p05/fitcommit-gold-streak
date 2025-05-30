@@ -21,11 +21,11 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({ onClose }) => {
 
   return (
     <div className="w-full h-full">
-      <SidebarHeader className="p-4">
-        <h2 className="text-xl font-display tracking-widest">FITCOMMIT</h2>
+      <SidebarHeader className="p-6 border-b border-white/10">
+        <h2 className="text-xl font-light tracking-[0.3em] text-white uppercase">FITCOMMIT</h2>
       </SidebarHeader>
-      <SidebarContent>
-        <SidebarMenu>
+      <SidebarContent className="bg-black/95">
+        <SidebarMenu className="p-4">
           {navigationItems.map((item) => (
             <NavigationItem
               key={item.path}

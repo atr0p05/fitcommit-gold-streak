@@ -19,7 +19,7 @@ const Header: React.FC = () => {
   };
   
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-lg border-b border-white/5">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-xl border-b border-white/10">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-4">
           {isMobile && (
@@ -30,7 +30,7 @@ const Header: React.FC = () => {
                   <span className="sr-only">Open menu</span>
                 </button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-[240px] p-0 bg-fitCharcoal">
+              <SheetContent side="left" className="w-[240px] p-0 bg-black/95 backdrop-blur-xl border-r border-white/20">
                 <SidebarProvider defaultOpen={true}>
                   <MobileNavigation onClose={() => setIsOpen(false)} />
                 </SidebarProvider>
@@ -38,7 +38,7 @@ const Header: React.FC = () => {
             </Sheet>
           )}
           <Link to="/" className="flex-shrink-0">
-            <h1 className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent text-lg sm:text-xl font-display font-semibold tracking-wider whitespace-nowrap">
+            <h1 className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent text-lg sm:text-xl font-light tracking-[0.3em] whitespace-nowrap uppercase">
               FITCOMMIT
             </h1>
           </Link>
