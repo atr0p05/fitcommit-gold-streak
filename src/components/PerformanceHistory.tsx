@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -7,7 +6,7 @@ import { healthService, HealthData } from "@/utils/healthService";
 import { geofencingService } from "@/utils/geofencingService";
 import { useToast } from "@/hooks/use-toast";
 import PerformanceStepsChart from "./performance/PerformanceStepsChart";
-import PerformanceHeartRateChart from "./performance/PerformanceHeartRateChart";
+import HeartRateZoneChart from "./performance/HeartRateZoneChart";
 import WorkoutCalendar from "./performance/WorkoutCalendar";
 
 const PerformanceHistory = () => {
@@ -147,7 +146,7 @@ const PerformanceHistory = () => {
           <TabsList>
             <TabsTrigger value="steps">Daily Steps</TabsTrigger>
             <TabsTrigger value="workouts">Workouts</TabsTrigger>
-            <TabsTrigger value="heartRate">Heart Rate</TabsTrigger>
+            <TabsTrigger value="heartRate">Heart Rate Zones</TabsTrigger>
           </TabsList>
           
           <TabsContent value="steps">
@@ -177,7 +176,7 @@ const PerformanceHistory = () => {
           </TabsContent>
 
           <TabsContent value="heartRate">
-            <PerformanceHeartRateChart 
+            <HeartRateZoneChart 
               heartRateData={healthData.heartRate} 
               loading={loading} 
             />
