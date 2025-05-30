@@ -37,7 +37,9 @@ const Header: React.FC = () => {
               </SheetContent>
             </Sheet>
           )}
-          <h1 className="text-fitWhite text-xl font-display tracking-widest">FITCOMMIT</h1>
+          <h1 className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent text-xl font-display font-semibold tracking-[0.2em] drop-shadow-sm">
+            FITCOMMIT
+          </h1>
         </div>
         
         {!isMobile && (

@@ -93,9 +93,13 @@ export default function Index() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}>
             <h1 className="font-display text-5xl md:text-7xl font-bold mb-6">
-              <span className="text-gradient">Elite Fitness</span>
+              <span className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent font-display tracking-[0.15em] text-shadow-lg drop-shadow-2xl">
+                ELITE FITNESS
+              </span>
               <br />
-              <span className="text-white">Accountability</span>
+              <span className="bg-gradient-to-r from-gray-200 via-white to-gray-200 bg-clip-text text-transparent font-display tracking-[0.25em] font-light text-shadow-md">
+                ACCOUNTABILITY
+              </span>
             </h1>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
               Transform your commitment into results. Every goal matters, every day counts, 
