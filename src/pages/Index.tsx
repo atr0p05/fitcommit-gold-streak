@@ -5,6 +5,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { GoalCard } from "@/components/ui/goal-card";
 import { Activity, Target, TrendingUp, Zap, Calendar, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export default function Index() {
   const [isVisible, setIsVisible] = useState(false);
@@ -105,14 +106,18 @@ export default function Index() {
               Transform your commitment into results. Every goal matters, every day counts.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center px-4">
-              <Button className="btn-luxury text-sm">
-                <Target className="w-4 h-4 mr-2" />
-                View Goals
-              </Button>
-              <Button variant="outline" className="btn-ghost-luxury text-sm">
-                <TrendingUp className="w-4 h-4 mr-2" />
-                Track Progress
-              </Button>
+              <Link to="/goals">
+                <Button className="btn-luxury text-sm w-full sm:w-auto">
+                  <Target className="w-4 h-4 mr-2" />
+                  View Goals
+                </Button>
+              </Link>
+              <Link to="/progress">
+                <Button variant="outline" className="btn-ghost-luxury text-sm w-full sm:w-auto">
+                  <TrendingUp className="w-4 h-4 mr-2" />
+                  Track Progress
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
@@ -139,10 +144,12 @@ export default function Index() {
         <section className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-white">Active Goals</h2>
-            <Button variant="outline" className="btn-ghost-luxury text-sm">
-              <Calendar className="w-4 h-4 mr-2" />
-              View All
-            </Button>
+            <Link to="/goals">
+              <Button variant="outline" className="btn-ghost-luxury text-sm">
+                <Calendar className="w-4 h-4 mr-2" />
+                View All
+              </Button>
+            </Link>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 max-w-6xl mx-auto">

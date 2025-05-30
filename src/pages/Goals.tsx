@@ -1,11 +1,20 @@
-
 import { Navigation } from "@/components/layout/Navigation";
 import { GoalCard } from "@/components/ui/goal-card";
 import { Plus, Calendar, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Goals() {
+  const { toast } = useToast();
+
+  const handleNewGoal = () => {
+    toast({
+      title: "New Goal",
+      description: "Goal creation feature coming soon!",
+    });
+  };
+
   const dailyGoals = [
     {
       title: "Daily Steps",
@@ -103,7 +112,7 @@ export default function Goals() {
               <h1 className="text-4xl font-bold text-white mb-2">Your Goals</h1>
               <p className="text-white/70">Track your progress and stay accountable</p>
             </div>
-            <Button className="btn-luxury">
+            <Button className="btn-luxury" onClick={handleNewGoal}>
               <Plus className="w-5 h-5 mr-2" />
               New Goal
             </Button>
