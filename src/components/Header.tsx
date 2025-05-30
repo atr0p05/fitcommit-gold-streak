@@ -25,7 +25,7 @@ const Header: React.FC = () => {
           {isMobile && (
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <button className="text-fitSilver hover:text-fitWhite p-2">
+                <button className="text-fitSilver hover:text-fitWhite p-2 flex-shrink-0">
                   <Menu size={24} />
                   <span className="sr-only">Open menu</span>
                 </button>
@@ -37,8 +37,8 @@ const Header: React.FC = () => {
               </SheetContent>
             </Sheet>
           )}
-          <Link to="/">
-            <h1 className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent text-lg sm:text-xl font-display font-semibold tracking-wider">
+          <Link to="/" className="flex-shrink-0">
+            <h1 className="bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent text-lg sm:text-xl font-display font-semibold tracking-wider whitespace-nowrap">
               FITCOMMIT
             </h1>
           </Link>
@@ -51,7 +51,7 @@ const Header: React.FC = () => {
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  "text-xs uppercase tracking-wider font-medium transition-colors font-display",
+                  "text-xs uppercase tracking-wider font-medium transition-colors font-display whitespace-nowrap",
                   isActive(item.path) ? "text-fitWhite" : "text-fitSilver hover:text-white"
                 )}
               >
